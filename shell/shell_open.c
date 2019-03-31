@@ -1,0 +1,72 @@
+#include "shell.h"
+
+static void	shell_get_settings(t_shell *sh, t_settings *settings)
+{
+	struct winsize	w;
+
+	settings->uid = getuid();
+	(access(".shellrc", FILE_EXISTS)) ? NULL : shell_read_config_file(sh);
+	shell_get_window_size(&settings->window_size);
+	tcgetattr(fileno(stdin), &settings->term_default);
+	settings->term_shell = settings->term_default;
+	settings->term_shell.c_lflag = ~(ECHO | ICANON | ISIG);
+	settings->term_shell.c_cc[VMIN] = 1;
+	settings->term_shell.c_cc[VTIME] = 0;
+	tcsetattr(fileno(stdin), TCSANOW, &settings->term_shell);
+	if (!settings->promt[0])
+		shell_get_promt(settings);
+	if (settings->history_buffsize < 1)
+		settings->history_buffsize = HISTORY_SIZE;
+}
+
+static void	shell_get_escape_sequences(t_reader *rd)
+{
+	rd->esc[RIGHT] = tgetstr("nd", NULL);
+	rd->esc[LEFT] = tgetstr("le", NULL);
+ 	rd->esc[UPB] = tgetstr("up", NULL);
+ 	rd->esc[DOWN] = tgetstr("do", NULL);
+ 	rd->esc[DEL] = tgetstr("dc", NULL);
+ 	rd->esc[CLR] = tgetstr("cl", NULL);
+ 	rd->esc[SAVEC] = tgetstr("sc", NULL);
+ 	rd->esc[RSRC] = tgetstr("rc", NULL);
+ 	rd->esc[CD] = tgetstr("cd", NULL);
+}
+
+static void	shell_allocate_memory(t_shell *sh)
+{
+	extern char		**environ;
+	register size_t	i;
+
+	if (!(sh->env = copy_strings(environ)))
+		shell_close(sh, ft_perror("shell error", "unable to copy eviron"));
+	if (!(sh->exec_paths = ft_strsplit(shell_get_value(sh->env, "PATH"), ':')))
+		shell_close(sh, ft_perror("shell error", "unable to get exec paths"));
+	if (!(sh->rd.history = (char **)ft_memalloc(sizeof(char *) * 
+										(sh->settings.history_buffsize + 1))))
+		shell_close(sh, ft_perror("shell", "memory allocation error"));
+	i = 0;
+	while (i < sh->settings.history_buffsize)
+	{
+		if(!(sh->rd.history[i++] = (char *)ft_strnew(LINE_MAX)))
+			shell_close(sh, ft_perror("shell", "memory allocation error"));
+	}
+}
+
+void		shell_open(t_shell *sh)
+{
+	char	*ttype;
+	int		ret;
+
+	ft_memset(sh, 0, sizeof(t_shell));
+	shell_get_settings(sh, &sh->settings);	
+	shell_allocate_memory(sh);
+	ttype = shell_get_value(sh->env, "TERM");
+	if (!(ret = tgetent(NULL, ttype) || !(ret = tgetent(NULL, DEFAULT_TERM))))
+		shell_close(sh, ft_perror("shell", "terminal type is not defined"));
+	else if (ret == -1)
+		shell_close(sh, ft_perror("shell", "could not access to termcap database"));
+	shell_get_escape_sequences(&sh->rd);
+	sh->rd.hm = 0;
+	sh->rd.hc = 0;
+	sh->flags = 0;
+}
