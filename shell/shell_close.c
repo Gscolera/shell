@@ -1,15 +1,24 @@
 #include "shell.h"
 
-void	shell_close(t_shell *sh, int exit_code)
+static void	shell_free_history_buffer(t_reader *rd)
 {
-	TERM_ACTION(CLR);
+	while (rd->history)
+	{
+		rd->buffptr = rd->history->next;
+		ft_memdel((void **)&rd->history);
+		rd->history = rd->buffptr;
+	}
+}
+
+void		shell_close(t_shell *sh, int exit_code)
+{
 	tcsetattr(fileno(stdin), TCSANOW, &sh->settings.term_default);
 	if (sh->env)
 		free_strings(sh->env);
 	if (sh->exec_paths)
 		free_strings(sh->exec_paths);
 	if (sh->rd.history)
-		free_strings(sh->rd.history);
+		shell_free_history_buffer(&sh->rd);
 	ft_putstr("\033]2;Terminal\007");
 	exit(exit_code);
 }

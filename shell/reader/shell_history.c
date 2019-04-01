@@ -1,24 +1,57 @@
 #include "shell.h"
 
-void	shell_scroll_input(t_shell *sh, t_reader *rd, int key)
+static void	shell_free_last_bufflist(t_reader *rd)
+{
+	t_bufflist	*tmp;
+
+	tmp = rd->buffend;
+	rd->buffend = rd->buffend->prev;
+	rd->buffend->next = NULL;
+	ft_memdel((void **)&tmp);
+}
+
+void	shell_create_history_list(t_shell *sh, t_reader *rd)
+{
+	rd->buffptr = (t_bufflist *)ft_memalloc(sizeof(t_bufflist));
+	if (!rd->buffptr)
+		shell_close(sh, ft_perror("shell", "memory allocation error"));
+	rd->buffptr->next = NULL;
+	rd->buffptr->prev = NULL;
+	if (!rd->history)
+	{
+		rd->buffptr->id = 0;
+		rd->history = rd->buffptr;
+		rd->buffend = rd->buffptr;
+	}
+	else
+	{
+		rd->buffptr->id = rd->history->id + 1;
+		rd->buffptr->next = rd->history;
+		rd->history->prev = rd->buffptr;
+		rd->history = rd->buffptr;
+		if (rd->history->id >= sh->settings.history_buffsize)
+			shell_free_last_bufflist(rd);
+	}
+
+}
+
+void	shell_scroll_history(t_shell *sh, t_reader *rd, int keycode)
 {
 	register int	i;
 
+	if (keycode == KEYUP && !rd->buffptr->next)
+		return ;
+	if (keycode == KEYDOWN && !rd->buffptr->prev)
+		return ;
 	i = -1;
-	if (key == KEYUP && rd->hc == 0)
-		return ;
-	if (key == KEYDOWN && rd->hc == rd->hm)
-		return ;
-	ft_strclr(rd->buffer);
-	ft_strclr(rd->history[rd->hm]);
 	rd->il = 0;
-	rd->hc = (key == KEYUP) ? rd->hc - 1 : rd->hc + 1;
-	ft_strcpy(rd->buffer, rd->history[rd->hc]);
-	ft_strclr(rd->history[rd->hm]);
+	ft_strclr(rd->buffer);
+	ft_strclr(rd->history->data);
+	rd->buffptr = (keycode == KEYUP) ? rd->buffptr->next : rd->buffptr->prev;
+	ft_strcpy(rd->buffer, rd->buffptr->data);
 	shell_mvch(sh, rd);
 	TERM_ACTION(CD);
 	while (rd->buffer[++i])
 		shell_insert_char(sh, rd, rd->buffer[i]);
 	ft_strclr(rd->buffer);
 }
-

@@ -9,10 +9,10 @@ static void	shell_get_settings(t_shell *sh, t_settings *settings)
 	shell_get_window_size(&settings->window_size);
 	tcgetattr(fileno(stdin), &settings->term_default);
 	settings->term_shell = settings->term_default;
-	settings->term_shell.c_lflag = ~(ECHO | ICANON | ISIG);
+	settings->term_shell.c_lflag &= ~(ECHO | ICANON | ISIG);
 	settings->term_shell.c_cc[VMIN] = 1;
 	settings->term_shell.c_cc[VTIME] = 0;
-	tcsetattr(fileno(stdin), TCSANOW, &settings->term_shell);
+	tcsetattr(0, TCSANOW, &settings->term_shell);
 	if (!settings->promt[0])
 		shell_get_promt(settings);
 	if (settings->history_buffsize < 1)
@@ -35,21 +35,11 @@ static void	shell_get_escape_sequences(t_reader *rd)
 static void	shell_allocate_memory(t_shell *sh)
 {
 	extern char		**environ;
-	register size_t	i;
 
 	if (!(sh->env = copy_strings(environ)))
 		shell_close(sh, ft_perror("shell error", "unable to copy eviron"));
 	if (!(sh->exec_paths = ft_strsplit(shell_get_value(sh->env, "PATH"), ':')))
 		shell_close(sh, ft_perror("shell error", "unable to get exec paths"));
-	if (!(sh->rd.history = (char **)ft_memalloc(sizeof(char *) * 
-										(sh->settings.history_buffsize + 1))))
-		shell_close(sh, ft_perror("shell", "memory allocation error"));
-	i = 0;
-	while (i < sh->settings.history_buffsize)
-	{
-		if(!(sh->rd.history[i++] = (char *)ft_strnew(LINE_MAX)))
-			shell_close(sh, ft_perror("shell", "memory allocation error"));
-	}
 }
 
 void		shell_open(t_shell *sh)
@@ -66,7 +56,4 @@ void		shell_open(t_shell *sh)
 	else if (ret == -1)
 		shell_close(sh, ft_perror("shell", "could not access to termcap database"));
 	shell_get_escape_sequences(&sh->rd);
-	sh->rd.hm = 0;
-	sh->rd.hc = 0;
-	sh->flags = 0;
 }

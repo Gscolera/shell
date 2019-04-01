@@ -1,14 +1,5 @@
 #include "shell.h"
 
-/*
- ******* This is a 42 school(Moscow campus) Unix-branch project*******
- ******* The aim of it is to recode a command line interpreter********
- ******* For this project it is prohibited to use:********************
- ******* * most of standart library functions*************************
- ******* * errno (I need to manage errors by my own)******************
- ******* Using of global variables is allowed in certian cases********
- */
-
 int		main(void)
 {
 	t_shell sh;

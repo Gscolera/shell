@@ -32,7 +32,11 @@
 # define KEYDEL			458961790
 # define KEYHOME		1792840
 # define KEYEND			1792838
-# define KEYENTER		13
+# ifdef __linux__
+#  define KEYENTER		13
+# else
+#  define KEYENTER		10
+# endif
 # define KEYTAB			9
 # define KEYESC			27
 # define KEYBS			127
@@ -49,11 +53,6 @@
 # define FILE_RD		3
 # define FILE_RDWR		4
 
-/* 
- * Termcap options, that i've found necessary.
- * Arranged as enum, so they could easily be allocated in stack.
- */
-
 enum					s_options
 {
 	RIGHT,
@@ -68,20 +67,19 @@ enum					s_options
 	TOTAL
 };
 
-/*
- * struct s_coordinate to track the position of cursor
- */
-
 typedef struct			s_coordinate
 {
 	short				x;
 	short				y;
 }						t_coordinate;
 
-/*
- * some settings that we'll try to read from .shellrc file, if dont't, 
- * we're gona use default values. 
- */
+typedef struct			s_buffer
+{
+	char				data[LINE_MAX];
+	size_t				id;
+	struct s_buffer		*prev;
+	struct s_buffer		*next;
+}						t_bufflist;
 
 typedef struct			s_settings
 {
@@ -94,34 +92,19 @@ typedef struct			s_settings
 	uid_t				uid;
 }						t_settings;
 
-/*
- * s_reader struct includes everything we need to read/store input,
- * move_cursor on the screen and track it's position.
- *
- * Some explanations:
- * esc - an array of termcap escape sequences
- * il - input length
- * ic - input current, the position of a cursor on the text line
- * hc - history buffer current line, that we deal with
- * hm - history buffer lines that are allready in use
- * crs - position of cursor in the terminal window
- */
-
 typedef	struct			s_reader
 {
+	t_bufflist			*history;
+	t_bufflist			*buffptr;
+	t_bufflist			*buffend;
+	t_bufflist			*aucmplt;
+	t_bufflist			*aucmplt_ptr;
 	char				buffer[LINE_MAX];
-	char				**history;
 	char				*esc[TOTAL];
 	size_t				il;
 	size_t				ic;
-	size_t				hc;
-	size_t				hm;
 	t_coordinate		crs;
 }						t_reader;
-
-/*
- * The main shell data type.
- */
 
 typedef struct			s_shell
 {

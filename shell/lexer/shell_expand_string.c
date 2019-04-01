@@ -19,7 +19,9 @@ static bool	shell_in_single_quote(char *string, int i)
 static void	shell_expand_home(char **env, char *string, char i)
 {
 	char *home;
-
+	
+	if (shell_in_single_quote(string, i))
+		return ;
 	home = shell_get_value(env, "HOME");
 	if (ft_strlen(home) + ft_strlen(string) - 1 < LINE_MAX)
 		ft_replace_substr(string, i, 1, home);
@@ -33,6 +35,8 @@ static void	shell_expand_variable(char **env, char *str, int i)
 
 	size = 0;
 	ft_bzero(buff, LINE_MAX);
+	if (shell_in_single_quote(str, i))
+		return ;
 	while (str[i] && str[i] != ' ' && str[i] != '\'' && str[i] != '\"')
 	{
 		size++;
@@ -51,11 +55,9 @@ void		shell_expand_string(t_shell *sh, char *string)
 	i = -1;
 	while (string[++i])
 	{
-		if (string[i] == '~' && (i == 0 || string[i - 1] != '\\') && 
-									!shell_in_single_quote(string, i))
+		if (string[i] == '~' && (i == 0 || string[i - 1] != '\\'))
 			shell_expand_home(sh->env, string, i);
-		else if (string[i] == '$' && (i == 0 || string[i - 1] != '\\' &&
-									!shell_in_single_quote(string, i)))
+		else if (string[i] == '$' && (i == 0 || string[i - 1] != '\\'))
 			shell_expand_variable(sh->env, string, i);
 	}
 }

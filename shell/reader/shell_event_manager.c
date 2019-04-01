@@ -62,7 +62,9 @@ int			shell_parse_events(t_shell *sh, t_reader *rd, char *key)
 	else if (keycode == KEYENTER)
 		sh->flags &= ~READING;
 	else if (keycode == KEYUP || keycode == KEYDOWN)
-		shell_scroll_input(sh, rd, keycode);
+		shell_scroll_history(sh, rd, keycode);
+	else if (keycode == KEYTAB && rd->history->data[0])
+		shell_autocomplete(sh, rd);
 	else if (keycode == KEYDEL || keycode == KEYBS)
 		shell_delete_char(sh, rd, keycode);
 	else if (keycode == KEYHOME)
