@@ -32,7 +32,10 @@ static void	shell_parse_buffer(t_shell *sh, t_reader *rd, char *buffer)
 			rd->buffptr = rd->history;
 		}
 		else
-			buffer += shell_parse_events(sh, rd, buffer);
+		{
+			shell_parse_events(sh, rd, buffer);
+			break ;
+		}
 		buffer++;
 	}
 }

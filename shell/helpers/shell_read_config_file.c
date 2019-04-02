@@ -2,6 +2,7 @@
 
 static void	shell_read_config_line(t_settings *settings, char *buffptr)
 {
+	ft_printf("OPEN\n");
 	if (ft_strnequ(buffptr, "PROMT=", 6))
 		ft_strcpy(settings->promt, buffptr + 6);
 	else if (ft_strnequ(buffptr, "HISTORYSIZE=", 12))
@@ -13,7 +14,7 @@ void		shell_read_config_file(t_shell *sh)
 	int		fd;
 	char	*buffptr;
 
-	if ((fd = open(".shellrc", O_RDONLY)) > 0)
+	if ((fd = open(CONFIG_FILE, O_RDONLY)) > 0)
 	{
 		buffptr = sh->rd.buffer;
 		while (true)

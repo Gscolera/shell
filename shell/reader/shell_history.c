@@ -29,7 +29,7 @@ void	shell_create_history_list(t_shell *sh, t_reader *rd)
 		rd->buffptr->next = rd->history;
 		rd->history->prev = rd->buffptr;
 		rd->history = rd->buffptr;
-		if (rd->history->id >= sh->settings.history_buffsize)
+		if (rd->history->id > sh->settings.history_buffsize)
 			shell_free_last_bufflist(rd);
 	}
 

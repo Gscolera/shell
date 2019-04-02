@@ -13,13 +13,12 @@
 # include <pwd.h>
 # include <fcntl.h>
 
-# define TERM_ACTION(x)	tputs(sh->rd.esc[x], fileno(stdin), ft_putchar)	
+# define TERM_ACTION(x)	tputs(sh->rd.esc[x], fileno(stdin), ft_putchar)
 /*
  ************DEFAULT_SETTINGS****************************** 
  */
-# define HISTORY_FILE	".shell_history"
 # define DEFAULT_TERM	"xterm-256color"
-# define CONFIG_FILE	".shellrc"
+# define CONFIG_FILE	"config"
 # define HISTORY_SIZE	1000
 /*
  ************KEYMAP**************************************** 
@@ -32,14 +31,14 @@
 # define KEYDEL			458961790
 # define KEYHOME		1792840
 # define KEYEND			1792838
-# ifdef __linux__
-#  define KEYENTER		13
-# else
-#  define KEYENTER		10
-# endif
+# define KEYENTER		10
 # define KEYTAB			9
 # define KEYESC			27
 # define KEYBS			127
+# define SHKEYLEFT		30078481936964
+# define SHKEYRIGHT		30078481936963
+# define SHKEYUP		30078481936961
+# define SHKEYDOWN		30078481936962
 /*
  **************FLAGS****************************************
  */
@@ -105,6 +104,17 @@ typedef	struct			s_reader
 	size_t				ic;
 	t_coordinate		crs;
 }						t_reader;
+
+typedef struct			s_cmplt
+{
+	char				*line;
+	char				*option_first;
+	char				*option_current;
+	char				*option_next;
+	char				*option_last;
+	int					fd;
+	size_t				total_options;
+}						t_cmplt;
 
 typedef struct			s_shell
 {

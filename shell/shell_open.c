@@ -5,7 +5,7 @@ static void	shell_get_settings(t_shell *sh, t_settings *settings)
 	struct winsize	w;
 
 	settings->uid = getuid();
-	(access(".shellrc", FILE_EXISTS)) ? NULL : shell_read_config_file(sh);
+	(access(CONFIG_FILE, FILE_EXISTS)) ? NULL : shell_read_config_file(sh);
 	shell_get_window_size(&settings->window_size);
 	tcgetattr(fileno(stdin), &settings->term_default);
 	settings->term_shell = settings->term_default;
