@@ -33,11 +33,9 @@ static long	int shell_get_key(char *buff)
 		return (((long)(buff[0]) << 32) | (buff[1] << 24) | (buff[2] << 16) |
 				(buff[3] << 8) | buff[4]);
 	}
-	if (!buff[6])
-	{
-		return (((long)(buff[0]) << 40) | ((long)(buff[1]) << 32) | 
+	return (((long)(buff[0]) << 40) | ((long)(buff[1]) << 32) |
 			(buff[2] << 24) | (buff[3] << 16) | (buff[4] << 8) | buff[5]);
-	}
+	
 
 }
 
@@ -56,7 +54,7 @@ void		shell_parse_events(t_shell *sh, t_reader *rd, char *buff)
 	long int 	key;
 
 	key = shell_get_key(buff);
-//	ft_printf("%d ", key);
+	//ft_printf("%d ", key);
 	if (key == KEYESC)
 		shell_close(sh, EXIT_SUCCESS);
 	else if (key == KEYLEFT && rd->ic > 0)
@@ -73,7 +71,7 @@ void		shell_parse_events(t_shell *sh, t_reader *rd, char *buff)
 		shell_scroll_history(sh, rd, key);
 	else if (key == KEYTAB && rd->history->data[0])
 		shell_autocomplete(sh, rd);
-	else if (key == KEYDEL || key == KEYBS)
+	else if (key == KEYDEL || key == KEYBS || key == KEYCRTLD)
 		shell_delete_char(sh, rd, key);
 	else
 		shell_additional_events(sh, rd, key);

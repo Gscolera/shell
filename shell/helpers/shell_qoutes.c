@@ -1,11 +1,16 @@
 #include "shell.h"
 
-bool	shell_squote(char *line, int i)
+bool	shell_quote(char *c, char *start)
 {
-	return (line[i] == '\'' && (i == 0 || line[i - 1] != '\\'));
+	return (*c == '\'' && (c == start || *(c - 1) != '\\'));
 }
 
-bool	shell_dquote(char *line, int i)
+bool	shell_dquote(char *c, char *start)
 {
-	return (line[i] == '\"' && (i == 0 || line[i - 1] != '\\'));
+	return (*c == '\"' && (c == start || *(c - 1) != '\\'));
+}
+
+bool	shell_bquote(char *c, char *start)
+{
+	return (*c == '`' && (c == start || *(c - 1) != '\\'));
 }

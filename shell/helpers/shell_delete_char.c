@@ -2,7 +2,7 @@
 
 void	shell_delete_char(t_shell *sh, t_reader *rd, int key)
 {
-	if (key == KEYDEL && rd->ic == rd->il)
+	if ((key == KEYDEL || key == KEYCRTLD) && rd->ic == rd->il)
 		return ;
 	if (key == KEYBS && rd->ic == 0)
 		return ;

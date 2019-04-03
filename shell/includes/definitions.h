@@ -35,6 +35,7 @@
 # define KEYTAB			9
 # define KEYESC			27
 # define KEYBS			127
+# define KEYCRTLD		4
 # define SHKEYLEFT		30078481936964
 # define SHKEYRIGHT		30078481936963
 # define SHKEYUP		30078481936961
@@ -43,6 +44,10 @@
  **************FLAGS****************************************
  */
 # define READING		1
+# define QUOTE			1 << 1
+# define DQUOTE			1 << 2
+# define BQUOTE			1 << 3
+# define NQUOTE(f)		!(f & QUOTE) && !(f & DQUOTE) && !(f & BQUOTE)
 /*
  *************ACCES FLAGS**********************************
  */
@@ -116,10 +121,18 @@ typedef struct			s_cmplt
 	size_t				total_options;
 }						t_cmplt;
 
+typedef struct			s_command
+{
+	char				*line;
+	char				**argv;
+	struct s_command	*next;
+}						t_command;
+
 typedef struct			s_shell
 {
 	t_settings			settings;
 	t_reader			rd;
+	t_command			*cmd;
 	char				**env;
 	char				**exec_paths;
 	size_t				flags;

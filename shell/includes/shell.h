@@ -6,7 +6,7 @@
 /*   By: anton <anton@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/24 16:16:33 by gscolera          #+#    #+#             */
-/*   Updated: 2019/04/01 21:34:11 by gscolera         ###   ########.fr       */
+/*   Updated: 2019/04/03 20:35:49 by gscolera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,15 @@ void				shell_mvcnpl(t_shell *sh, t_reader *rd, long int key);
 /*
  ********************LEXER***************************************************************
  */
+void				shell_split_input(t_shell *sh);
+void				shell_split_command(t_shell *sh);
 void				shell_expand_string(t_shell *sh, char *string);
 void				shell_delete_chars_from_string(char *str, char *dlt);
-void				shell_parse_input(t_shell *sh, t_reader *rd);
-size_t				shell_count_args(char *input);
+void				shell_parse_input(t_shell *sh);
+/*
+ ********************EXECUTER************************************************************
+ */
+void				shell_execute(t_shell *sh);
 /*
  *********************HELPERS************************************************************
  */
@@ -61,14 +66,8 @@ void				shell_get_window_size(t_coordinate *window_size);
 void				shell_print_promt(t_shell *sh);
 void				shell_count_promt_len(t_settings *settings, char *promt);
 void				shell_delete_char(t_shell *sh, t_reader *rd, int key);
-bool				shell_squote(char *line, int i);
-bool				shell_dquote(char *line, int i);
-/*
- **********************CURSOR MOTION*****************************************************
- */
-/*
- **********************HISTORY************************************************************
- */
-
+bool				shell_quote(char *c, char *start);
+bool				shell_dquote(char *c, char *start);
+bool				shell_bquote(char *c, char *start);
 
 #endif

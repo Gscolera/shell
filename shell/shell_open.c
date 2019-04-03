@@ -9,7 +9,7 @@ static void	shell_get_settings(t_shell *sh, t_settings *settings)
 	shell_get_window_size(&settings->window_size);
 	tcgetattr(fileno(stdin), &settings->term_default);
 	settings->term_shell = settings->term_default;
-	settings->term_shell.c_lflag &= ~(ECHO | ICANON | ISIG);
+	settings->term_shell.c_lflag &= ~(ECHO | ICANON);
 	settings->term_shell.c_cc[VMIN] = 1;
 	settings->term_shell.c_cc[VTIME] = 0;
 	tcsetattr(0, TCSANOW, &settings->term_shell);
