@@ -1,11 +1,10 @@
 #include "shell.h"
 
-char	*shell_get_value(char **array, char *var)
+char	*shell_getenv(char **array, char *var, int len)
 {
-	size_t	len;
 	size_t	i;
 
-	if (!array || !var || !(len = ft_strlen(var)))
+	if (!array || !var)
 		return (NULL);
 	i = -1;
 	while (array[++i])

@@ -1,2 +1,2 @@
-HISTORYSIZE=3
-PROMT={red}{underline}"$USER"->{blue}"$PWD"{eoc}$>
+HISTORYSIZE=500
+P!ROMT={red}{underline}"$USER"->{blue}"$PWD"{eoc}$>

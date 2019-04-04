@@ -5,6 +5,7 @@ static void	shell_free_history_buffer(t_reader *rd)
 	while (rd->history)
 	{
 		rd->buffptr = rd->history->next;
+		ft_strdel(&rd->history->data);
 		ft_memdel((void **)&rd->history);
 		rd->history = rd->buffptr;
 	}

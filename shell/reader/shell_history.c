@@ -15,6 +15,9 @@ void	shell_create_history_list(t_shell *sh, t_reader *rd)
 	rd->buffptr = (t_bufflist *)ft_memalloc(sizeof(t_bufflist));
 	if (!rd->buffptr)
 		shell_close(sh, ft_perror("shell", "memory allocation error"));
+	if (!(rd->buffptr->data = (char *)ft_memalloc(BUFF_SIZE)))
+		shell_close(sh, ft_perror("shell", "memory allocation error"));
+	rd->buffptr->size = BUFF_SIZE;
 	rd->buffptr->next = NULL;
 	rd->buffptr->prev = NULL;
 	if (!rd->history)
@@ -45,13 +48,10 @@ void	shell_scroll_history(t_shell *sh, t_reader *rd, int keycode)
 		return ;
 	i = -1;
 	rd->il = 0;
-	ft_strclr(rd->buffer);
 	ft_strclr(rd->history->data);
 	rd->buffptr = (keycode == KEYUP) ? rd->buffptr->next : rd->buffptr->prev;
-	ft_strcpy(rd->buffer, rd->buffptr->data);
 	shell_mvch(sh, rd);
 	TERM_ACTION(CD);
-	while (rd->buffer[++i])
-		shell_insert_char(sh, rd, rd->buffer[i]);
-	ft_strclr(rd->buffer);
+	while (rd->buffptr->data[++i])
+		shell_insert_char(sh, rd, rd->buffptr->data[i]);
 }

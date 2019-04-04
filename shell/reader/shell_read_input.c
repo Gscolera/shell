@@ -2,6 +2,14 @@
 
 void		shell_insert_char(t_shell *sh, t_reader *rd, char c)
 {
+	if (rd->il == rd->history->size - 2)
+	{
+		rd->history->data = (char *)ft_realloc(rd->history->data, 
+								rd->history->size, rd->history->size + BUFF_SIZE);
+		if (!rd->history->data)
+			shell_close(sh, ft_perror("shell", "memory allocation error"));
+		rd->history->size += BUFF_SIZE;
+	}
 	ft_insert_char(rd->history->data, c, rd->ic);
 	TERM_ACTION(SAVEC);
 	ft_putstr(&rd->history->data[rd->ic]);
@@ -18,15 +26,14 @@ void		shell_insert_char(t_shell *sh, t_reader *rd, char c)
 		rd->crs.x = 0;
 		rd->crs.y++;
 		TERM_ACTION(DOWN);
-	}
-	
+	}	
 }
 
 static void	shell_parse_buffer(t_shell *sh, t_reader *rd, char *buffer)
 {
 	while (*buffer)
 	{
-		if (ft_isprint(*buffer) && rd->il < LINE_MAX)
+		if (ft_isprint(*buffer))
 		{
 			shell_insert_char(sh, rd, *buffer);
 			rd->buffptr = rd->history;
@@ -42,12 +49,18 @@ static void	shell_parse_buffer(t_shell *sh, t_reader *rd, char *buffer)
 
 void	shell_read_input(t_shell *sh, t_reader *rd)
 {
-	shell_print_promt(sh);
+	rd->ic = 0;
+	rd->il = 0;
+	rd->crs.y = 0;
 	shell_create_history_list(sh, rd);
+	rd->crs.x = sh->settings.promt_len;
+	sh->flags |= READING;
+	ft_printf(sh->settings.promt);
 	while (sh->flags & READING)
 	{
 		ft_strclr(rd->buffer);
 		read(fileno(stdin), rd->buffer, LINE_MAX);
 		shell_parse_buffer(sh, rd, rd->buffer);
 	}
+	sh->input = ft_strdup(rd->history->data);
 }

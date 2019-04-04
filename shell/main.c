@@ -10,7 +10,7 @@ int		main(void)
 	while (true)
 	{
 		shell_read_input(&sh, &sh.rd);
-		shell_parse_input(&sh);
+		shell_expand_input(&sh);
 		shell_execute(&sh);
 	}
 	return (EXIT_SUCCESS);

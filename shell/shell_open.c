@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   shell_open.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gscolera <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/04/04 21:40:11 by gscolera          #+#    #+#             */
+/*   Updated: 2019/04/04 21:43:39 by gscolera         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "shell.h"
 
 static void	shell_get_settings(t_shell *sh, t_settings *settings)
@@ -17,6 +29,7 @@ static void	shell_get_settings(t_shell *sh, t_settings *settings)
 		shell_get_promt(settings);
 	if (settings->history_buffsize < 1)
 		settings->history_buffsize = HISTORY_SIZE;
+	shell_count_promt_len(&sh->settings, settings->promt);
 }
 
 static void	shell_get_escape_sequences(t_reader *rd)
@@ -38,7 +51,7 @@ static void	shell_allocate_memory(t_shell *sh)
 
 	if (!(sh->env = copy_strings(environ)))
 		shell_close(sh, ft_perror("shell error", "unable to copy eviron"));
-	if (!(sh->exec_paths = ft_strsplit(shell_get_value(sh->env, "PATH"), ':')))
+	if (!(sh->exec_paths = ft_strsplit(shell_getenv(sh->env, "PATH", 4), ':')))
 		shell_close(sh, ft_perror("shell error", "unable to get exec paths"));
 }
 
@@ -50,7 +63,7 @@ void		shell_open(t_shell *sh)
 	ft_memset(sh, 0, sizeof(t_shell));
 	shell_get_settings(sh, &sh->settings);	
 	shell_allocate_memory(sh);
-	ttype = shell_get_value(sh->env, "TERM");
+	ttype = shell_getenv(sh->env, "TERM", 4);
 	if (!(ret = tgetent(NULL, ttype) || !(ret = tgetent(NULL, DEFAULT_TERM))))
 		shell_close(sh, ft_perror("shell", "terminal type is not defined"));
 	else if (ret == -1)

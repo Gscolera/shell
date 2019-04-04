@@ -14,12 +14,16 @@
 # include <fcntl.h>
 
 # define TERM_ACTION(x)	tputs(sh->rd.esc[x], fileno(stdin), ft_putchar)
+# define QUOTE(c)		(c == '\'' || c == '\"')
+# define BSLASH(c)		c == '\\'
 /*
  ************DEFAULT_SETTINGS****************************** 
  */
 # define DEFAULT_TERM	"xterm-256color"
 # define CONFIG_FILE	"config"
 # define HISTORY_SIZE	1000
+# define HOST_NAME_MAX	255
+# define BUFF_SIZE		100
 /*
  ************KEYMAP**************************************** 
  */
@@ -44,10 +48,9 @@
  **************FLAGS****************************************
  */
 # define READING		1
-# define QUOTE			1 << 1
-# define DQUOTE			1 << 2
-# define BQUOTE			1 << 3
-# define NQUOTE(f)		!(f & QUOTE) && !(f & DQUOTE) && !(f & BQUOTE)
+# define BSL			2
+# define SQT			4
+# define DQT			8
 /*
  *************ACCES FLAGS**********************************
  */
@@ -79,7 +82,8 @@ typedef struct			s_coordinate
 
 typedef struct			s_buffer
 {
-	char				data[LINE_MAX];
+	char				*data;
+	size_t				size;
 	size_t				id;
 	struct s_buffer		*prev;
 	struct s_buffer		*next;
@@ -101,12 +105,11 @@ typedef	struct			s_reader
 	t_bufflist			*history;
 	t_bufflist			*buffptr;
 	t_bufflist			*buffend;
-	t_bufflist			*aucmplt;
-	t_bufflist			*aucmplt_ptr;
 	char				buffer[LINE_MAX];
 	char				*esc[TOTAL];
 	size_t				il;
 	size_t				ic;
+	size_t				buff_size;
 	t_coordinate		crs;
 }						t_reader;
 
@@ -133,6 +136,7 @@ typedef struct			s_shell
 	t_settings			settings;
 	t_reader			rd;
 	t_command			*cmd;
+	char				*input;
 	char				**env;
 	char				**exec_paths;
 	size_t				flags;
