@@ -24,29 +24,29 @@ static size_t	shell_count_varlen(char *ptr)
 	}
 	return (varlen);
 }
-void			shell_expand_variable(t_shell *sh, int i)
+char			*shell_expand_variable(t_shell *sh, char *string, int i)
 {
 	char	*expanded;
 	char	*value;
 	size_t	j;
 	size_t	varlen;
 
-	varlen = shell_count_varlen(&sh->input[i + 1]);
-	value = shell_getenv(sh->env, &sh->input[i + 1], varlen++);
-	expanded = ft_strnew(ft_strlen(sh->input) - varlen + ft_strlen(value));
+	varlen = shell_count_varlen(&string[i + 1]);
+	value = shell_getenv(sh->env, &string[i + 1], varlen++);
+	expanded = ft_strnew(ft_strlen(string) - varlen + ft_strlen(value));
 	if (!expanded)
 		shell_close(sh, ft_perror("shell", "malloc error"));
 	j = 0;
 	while (j < i)
 	{
-		expanded[j] = sh->input[j];
+		expanded[j] = string[j];
 		j++;
-	}
-	while (*value)
+	}	
+	while (value && *value)
 		expanded[j++] = *(value++);
 	i += varlen;
-	while (sh->input[i])
-		expanded[j++] = sh->input[i++];
-	ft_strdel(&sh->input);
-	sh->input = expanded;
+	while (string[i])
+		expanded[j++] = string[i++];
+	ft_strdel(&string);
+	return (expanded);
 }

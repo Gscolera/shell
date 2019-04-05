@@ -29,7 +29,6 @@ static void	shell_get_settings(t_shell *sh, t_settings *settings)
 		shell_get_promt(settings);
 	if (settings->history_buffsize < 1)
 		settings->history_buffsize = HISTORY_SIZE;
-	shell_count_promt_len(&sh->settings, settings->promt);
 }
 
 static void	shell_get_escape_sequences(t_reader *rd)

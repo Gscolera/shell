@@ -69,7 +69,7 @@ void		shell_parse_events(t_shell *sh, t_reader *rd, char *buff)
 		sh->flags &= ~READING;
 	else if (key == KEYUP || key == KEYDOWN)
 		shell_scroll_history(sh, rd, key);
-	else if (key == KEYTAB && rd->history->data[0])
+	else if (key == KEYTAB)
 		shell_autocomplete(sh, rd);
 	else if (key == KEYDEL || key == KEYBS || key == KEYCRTLD)
 		shell_delete_char(sh, rd, key);

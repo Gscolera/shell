@@ -15,14 +15,15 @@
 
 # define TERM_ACTION(x)	tputs(sh->rd.esc[x], fileno(stdin), ft_putchar)
 # define QUOTE(c)		(c == '\'' || c == '\"')
-# define BSLASH(c)		c == '\\'
+# define NQT(f)			(!(f & SQT) && !(f & DQT))
+# define BSLASH(c)		(c == '\\')
 /*
  ************DEFAULT_SETTINGS****************************** 
  */
 # define DEFAULT_TERM	"xterm-256color"
 # define CONFIG_FILE	"config"
 # define HISTORY_SIZE	1000
-# define HOST_NAME_MAX	255
+# define HOST_NAME		255
 # define BUFF_SIZE		100
 /*
  ************KEYMAP**************************************** 
@@ -47,10 +48,11 @@
 /*
  **************FLAGS****************************************
  */
-# define READING		1
-# define BSL			2
-# define SQT			4
-# define DQT			8
+# define READING		(1 << 0)
+# define BSL			(1 << 1)
+# define SQT			(1 << 2)
+# define DQT			(1 << 3)
+# define INP			(1 << 4)
 /*
  *************ACCES FLAGS**********************************
  */
@@ -124,18 +126,11 @@ typedef struct			s_cmplt
 	size_t				total_options;
 }						t_cmplt;
 
-typedef struct			s_command
-{
-	char				*line;
-	char				**argv;
-	struct s_command	*next;
-}						t_command;
-
 typedef struct			s_shell
 {
 	t_settings			settings;
 	t_reader			rd;
-	t_command			*cmd;
+	char				**cmd;
 	char				*input;
 	char				**env;
 	char				**exec_paths;

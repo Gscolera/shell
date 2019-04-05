@@ -46,8 +46,12 @@ void				shell_mvcnpl(t_shell *sh, t_reader *rd, long int key);
 /*
  ********************LEXER***************************************************************
  */
-void				shell_expand_input(t_shell *sh);
-void				shell_expand_variable(t_shell *sh, int i);
+void				shell_manage_input(t_shell *sh);
+void				shell_manage_quote(t_shell *sh, char *string, int i);
+char				*shell_expand_string(t_shell *sh, char *string);
+char				*shell_expand_variable(t_shell *sh, char *string, int i);
+char				*shell_expand_home(t_shell *sh, char *string, int i);
+void				shell_get_commands(t_shell *sh, char *input);
 /*
  ********************EXECUTER************************************************************
  */
@@ -63,5 +67,6 @@ void				shell_get_window_size(t_coordinate *window_size);
 void				shell_print_promt(t_shell *sh);
 void				shell_count_promt_len(t_settings *settings, char *promt);
 void				shell_delete_char(t_shell *sh, t_reader *rd, int key);
+void				shell_delete_characters(char *string, char *dlt);
 
 #endif

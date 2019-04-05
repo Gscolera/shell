@@ -47,15 +47,28 @@ static void	shell_parse_buffer(t_shell *sh, t_reader *rd, char *buffer)
 	}
 }
 
+static void	shell_expand_promt(t_shell *sh)
+{
+	char *promt;
+
+	promt = ft_strdup(sh->settings.promt);
+	promt = shell_expand_string(sh, promt);
+	shell_delete_characters(promt, "\"\'");
+	shell_count_promt_len(&sh->settings, promt);
+	sh->rd.crs.x = sh->settings.promt_len;
+	ft_printf(promt);
+	ft_strdel(&promt);
+}
+
 void	shell_read_input(t_shell *sh, t_reader *rd)
 {
 	rd->ic = 0;
 	rd->il = 0;
 	rd->crs.y = 0;
 	shell_create_history_list(sh, rd);
-	rd->crs.x = sh->settings.promt_len;
-	sh->flags |= READING;
-	ft_printf(sh->settings.promt);
+	sh->flags &= ~INP;
+	shell_expand_promt(sh);
+	sh->flags |= READING;	
 	while (sh->flags & READING)
 	{
 		ft_strclr(rd->buffer);
@@ -63,4 +76,5 @@ void	shell_read_input(t_shell *sh, t_reader *rd)
 		shell_parse_buffer(sh, rd, rd->buffer);
 	}
 	sh->input = ft_strdup(rd->history->data);
+	sh->flags |= INP;
 }

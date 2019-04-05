@@ -12,25 +12,14 @@
 
 #include "shell.h"
 
-static void	shell_next_command(t_shell *sh)
-{
-	t_command *tmp;
-
-	tmp = sh->cmd->next;
-	ft_strdel(&sh->cmd->line);
-	free_strings(sh->cmd->argv);
-	ft_memdel((void **)&sh->cmd);
-	sh->cmd = tmp;
-}
-
 void	shell_execute(t_shell *sh)
 {
 	ft_putchar('\n');
-	ft_printf("%s\n", sh->input);
-/*	while (sh->cmd)
+	if (sh->cmd)
 	{
-		ft_printf("%s\n", sh->cmd->line);
-		shell_next_command(sh);
-	}*/
+		print_strings(sh->cmd);
+		free_strings(sh->cmd);
+		sh->cmd = NULL;
+	}
 	ft_strdel(&sh->input);
 }

@@ -20,45 +20,52 @@ static bool	shell_special(char c)
 			c == '?');
 }
 
-static void	shell_manage_quote(t_shell *sh, char quote)
+void		shell_manage_quote(t_shell *sh, char *string, int i)
 {
-
-	if (quote == '\'' && !(sh->flags & DQT))
+	if (string[i] == '\'' && !(sh->flags & DQT))
 	{
 		if (sh->flags & SQT)
 			sh->flags &= ~SQT;
 		else
 			sh->flags |= SQT;
 	}
-	else if (quote == '\"' && !(sh->flags & SQT))
+	else if (string[i] == '\"' && !(sh->flags & SQT))
 	{
 		if (sh->flags & DQT)
 			sh->flags &= ~DQT;
 		else
-			sh->flags |= SQT;
+			sh->flags |= DQT;
 	}
 }
 
-static void	shell_manage_special(t_shell *sh, int i)
+static char	*shell_manage_special(t_shell *sh, char *string, int i)
 {
-	if (sh->input[i] == '$')
-		shell_expand_variable(sh, i);
-
+	if (string[i] == '$')
+		string = shell_expand_variable(sh, string, i);
+	else if (string[i] == '~' && !(sh->flags & DQT))
+		string = shell_expand_home(sh, string, i);
+	return (string);
 }
 
-void		shell_expand_input(t_shell *sh)
+char		*shell_expand_string(t_shell *sh, char *string)
 {
-	register int	i;
+	int	i;
 
 	i = -1;
-	while (sh->input[++i])
+	while (string[++i])
 	{
-		if (BSLASH(sh->input[i]) && !(sh->flags & SQT))
-			ft_delete_char(sh->input, i);
-		else if (QUOTE(sh->input[i]))
-			shell_manage_quote(sh, sh->input[i]);
-		else if (shell_special(sh->input[i]) && !(sh->flags & SQT))
-			shell_manage_special(sh, i);
+		if (BSLASH(string[i]) && !(sh->flags & SQT))
+			ft_delete_char(string, i);
+		else if (QUOTE(string[i]) && QUOTE(string[i + 1]) && NQT(sh->flags))
+		{
+			ft_delete_char(string, i);
+			ft_delete_char(string, i--);
+		}
+		else if (QUOTE(string[i]))
+			shell_manage_quote(sh, string, i);
+		else if (shell_special(string[i]) && !(sh->flags & SQT))
+			string = shell_manage_special(sh, string, i);
 	}
-	sh->flags &= ~(SQT | DQT); 
+	sh->flags &= ~(SQT | DQT);
+	return (string);
 }
