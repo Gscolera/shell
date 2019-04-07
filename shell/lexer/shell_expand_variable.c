@@ -24,6 +24,14 @@ static size_t	shell_count_varlen(char *ptr)
 	}
 	return (varlen);
 }
+
+char			*shell_delete_var_name(char *string, int i)
+{
+	while (string[i] && string[i] != ' ' && !QUOTE(string[i]))
+		ft_delete_char(string, i);
+	return (string);
+}
+
 char			*shell_expand_variable(t_shell *sh, char *string, int i)
 {
 	char	*expanded;
@@ -32,7 +40,8 @@ char			*shell_expand_variable(t_shell *sh, char *string, int i)
 	size_t	varlen;
 
 	varlen = shell_count_varlen(&string[i + 1]);
-	value = shell_getenv(sh->env, &string[i + 1], varlen++);
+	if (!(value = shell_getenv(sh->env, &string[i + 1], varlen++)))
+		return (shell_delete_var_name(string, i));
 	expanded = ft_strnew(ft_strlen(string) - varlen + ft_strlen(value));
 	if (!expanded)
 		shell_close(sh, ft_perror("shell", "malloc error"));
