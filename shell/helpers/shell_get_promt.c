@@ -7,7 +7,7 @@ void	shell_get_promt(t_settings *settings)
 
 	uid = getpwuid(settings->uid);
 	ft_strcpy(settings->promt, "{green}{bold}");
-	gethostname(host, HOST_NAME_MAX);
+	gethostname(host, HOST_NAME);
 	ft_strcat(settings->promt, uid->pw_name);
 	ft_strcat(settings->promt, "@");
 	ft_strcat(settings->promt, host);

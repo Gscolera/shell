@@ -4,14 +4,10 @@
 char	**strings_allocate(size_t size)
 {
 	char			**array;
-	register size_t i;
 
-	i = 0;
-	array = malloc(sizeof(char *) * (size + 1));
+	array = (char **)ft_memalloc(sizeof(char *) * (size + 1));
 	if (!array)
 		return (NULL);
-	while (i <= size)
-		array[i++] = NULL;
 	return (array);
 }
 
@@ -34,7 +30,7 @@ void	print_strings(char **str)
 
 	i = -1;
 	while (str[++i])
-		ft_printf("%s\n", str[i]);
+		ft_putendl(str[i]);
 }
 
 size_t	strings_length(char **strings)

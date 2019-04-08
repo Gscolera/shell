@@ -1,33 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   shell_execute.c                                    :+:      :+:    :+:   */
+/*   shell_switch_flag.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gscolera <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/03 17:55:22 by gscolera          #+#    #+#             */
-/*   Updated: 2019/04/08 19:32:41 by gscolera         ###   ########.fr       */
+/*   Created: 2019/04/08 20:25:55 by gscolera          #+#    #+#             */
+/*   Updated: 2019/04/08 20:29:57 by gscolera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-void	shell_execute(t_shell *sh)
+void	shell_switch_flag(t_shell *sh, int flag)
 {
-	t_command *tmp;
-	
-	ft_putchar('\n');
-	ft_strdel(&sh->input);
-	while (sh->cmd_list)
-	{
-		tmp = sh->cmd_list->next;
-		ft_putendl(sh->cmd_list->cmd);
-		ft_strdel(&sh->cmd_list->cmd);
-		ft_putendl("-----------------");
-		print_strings(sh->cmd_list->argv);
-		ft_putendl("-----------------");
-		free(sh->cmd_list);
-		sh->cmd_list = tmp;
-	}
-	sh->cmd_list = NULL;
+	if (sh->flags & flag)
+		sh->flags &= ~flag;
+	else
+		sh->flags |= flag;
 }

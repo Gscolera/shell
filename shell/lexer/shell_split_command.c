@@ -1,33 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   shell_execute.c                                    :+:      :+:    :+:   */
+/*   shell_split_command.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gscolera <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/03 17:55:22 by gscolera          #+#    #+#             */
-/*   Updated: 2019/04/08 19:32:41 by gscolera         ###   ########.fr       */
+/*   Created: 2019/04/08 17:27:53 by gscolera          #+#    #+#             */
+/*   Updated: 2019/04/08 21:27:14 by gscolera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-void	shell_execute(t_shell *sh)
+static char		**shell_get_argv(t_shell *sh, t_command *cmd_list, char *cmd)
 {
-	t_command *tmp;
+	char	**argv;
 	
-	ft_putchar('\n');
-	ft_strdel(&sh->input);
-	while (sh->cmd_list)
+	argv = strings_allocate(0);
+	for (int i = 0; i < 3; i++)
+		string_add(&argv, "Hello");
+	return (argv);
+}
+
+void			shell_split_commands(t_shell *sh, t_command *cmd_list)
+{
+	while (cmd_list)
 	{
-		tmp = sh->cmd_list->next;
-		ft_putendl(sh->cmd_list->cmd);
-		ft_strdel(&sh->cmd_list->cmd);
-		ft_putendl("-----------------");
-		print_strings(sh->cmd_list->argv);
-		ft_putendl("-----------------");
-		free(sh->cmd_list);
-		sh->cmd_list = tmp;
+		cmd_list->argv = shell_get_argv(sh, cmd_list, cmd_list->cmd);
+		cmd_list = cmd_list->next;
 	}
-	sh->cmd_list = NULL;
 }

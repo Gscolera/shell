@@ -6,7 +6,7 @@
 /*   By: anton <anton@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/24 16:16:33 by gscolera          #+#    #+#             */
-/*   Updated: 2019/04/04 21:45:09 by gscolera         ###   ########.fr       */
+/*   Updated: 2019/04/08 20:27:41 by gscolera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,8 @@ void				shell_manage_quote(t_shell *sh, char *string, int i);
 char				*shell_expand_string(t_shell *sh, char *string);
 char				*shell_expand_variable(t_shell *sh, char *string, int i);
 char				*shell_expand_home(t_shell *sh, char *string, int i);
-void				shell_get_commands(t_shell *sh, char *input);
+void				shell_split_input(t_shell *sh, char *input);
+void				shell_split_commands(t_shell *sh, t_command *cmd_list);
 /*
  ********************EXECUTER************************************************************
  */
@@ -68,5 +69,6 @@ void				shell_print_promt(t_shell *sh);
 void				shell_count_promt_len(t_settings *settings, char *promt);
 void				shell_delete_char(t_shell *sh, t_reader *rd, int key);
 void				shell_delete_characters(char *string, char *dlt);
+void				shell_switch_flag(t_shell *sh, int flag);
 
 #endif

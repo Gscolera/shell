@@ -52,7 +52,7 @@
 # define BSL			(1 << 1)
 # define SQT			(1 << 2)
 # define DQT			(1 << 3)
-# define INP			(1 << 4)
+# define SPC			(1 << 4)
 /*
  *************ACCES FLAGS**********************************
  */
@@ -126,11 +126,18 @@ typedef struct			s_cmplt
 	size_t				total_options;
 }						t_cmplt;
 
+typedef struct			s_command
+{
+	char				*cmd;
+	char				**argv;
+	struct s_command	*next;
+}						t_command;
+
 typedef struct			s_shell
 {
 	t_settings			settings;
 	t_reader			rd;
-	char				**cmd;
+	t_command			*cmd_list;
 	char				*input;
 	char				**env;
 	char				**exec_paths;

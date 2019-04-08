@@ -4,22 +4,19 @@
 bool	string_add(char ***string, char *str)
 {
 	char	**new;
-	size_t	length;
-	size_t	i;
+	char	**ptr;
+	int		i;
 
-	length = strings_length(string[0]);
-	if (!(new = strings_allocate(length + 1)))
+	ptr = *string;
+	new = strings_allocate(strings_length(ptr) + 1);
+	if (!new)
 		return (0);
-	i = 0;
-	while (i < length)
-	{
-		new[i] = string[0][i];
-		i++;
-	}
-	if(!(new[i] = ft_strdup(str)))
-		return (0);
-	free(string[0]);
-	string[0] = new;
+	i = -1;
+	while (ptr[++i])
+		new[i] = ptr[i];
+	new[i] = ft_strdup(str);
+	free(ptr);
+	*string = new;
 	return (1);
 }
 
