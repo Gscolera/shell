@@ -12,21 +12,56 @@
 
 #include "shell.h"
 
-static char		**shell_get_argv(t_shell *sh, t_command *cmd_list, char *cmd)
+static void		shell_get_next_arg(t_shell *sh, t_command *cmd_list, char *cmd)
 {
-	char	**argv;
+	char	start;
+	int		i;
+
+	i = -1;
+	start = *cmd;
+	if (QUOTE(start))
+	{
+		cmd++;
+		while (cmd[++i] != start)
+			NULL;
+		cmd[i] = '\0';
+		ft_printf("\n ARGV %s", cmd);
+		string_add(&cmd_list->argv, cmd);
+	}
+	else
+	{
+		while (cmd[i] && cmd[i] > 32)
+			i++;
+		cmd[i] == '\0';	
+		ft_printf("\n ARGV %s", cmd);
+		string_add(&cmd_list->argv, cmd);
+	}
+}
+
+static void		shell_get_argv(t_shell *sh, t_command *cmd_list, char *cmd)
+{
+	int	i;
+
+	i = 0;
+	while (*cmd)
+	{
+		while (*cmd && *cmd < 33)
+			cmd++;
+		shell_get_next_arg(sh, cmd_list, cmd);
+		cmd += ft_strlen(cmd_list->argv[i++]) + 1;
+	}
 	
-	argv = strings_allocate(0);
-	for (int i = 0; i < 3; i++)
-		string_add(&argv, "Hello");
-	return (argv);
 }
 
 void			shell_split_commands(t_shell *sh, t_command *cmd_list)
 {
+
 	while (cmd_list)
 	{
-		cmd_list->argv = shell_get_argv(sh, cmd_list, cmd_list->cmd);
+		cmd_list->argv = strings_allocate(0);
+		if (!cmd_list->argv)
+			shell_close(sh, ft_perror("shell", "malloc error"));
+		shell_get_argv(sh, cmd_list, cmd_list->cmd);
 		cmd_list = cmd_list->next;
 	}
 }

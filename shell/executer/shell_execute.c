@@ -21,11 +21,11 @@ void	shell_execute(t_shell *sh)
 	while (sh->cmd_list)
 	{
 		tmp = sh->cmd_list->next;
-		ft_putendl(sh->cmd_list->cmd);
 		ft_strdel(&sh->cmd_list->cmd);
 		ft_putendl("-----------------");
 		print_strings(sh->cmd_list->argv);
 		ft_putendl("-----------------");
+		free_strings(sh->cmd_list->argv);
 		free(sh->cmd_list);
 		sh->cmd_list = tmp;
 	}
