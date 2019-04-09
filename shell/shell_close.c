@@ -16,8 +16,6 @@ void		shell_close(t_shell *sh, int exit_code)
 	tcsetattr(fileno(stdin), TCSANOW, &sh->settings.term_default);
 	if (sh->env)
 		free_strings(sh->env);
-	if (sh->exec_paths)
-		free_strings(sh->exec_paths);
 	if (sh->rd.history)
 		shell_free_history_buffer(&sh->rd);
 	if (sh->input)

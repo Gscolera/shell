@@ -33,7 +33,7 @@ void	print_strings(char **str)
 		ft_putendl(str[i]);
 }
 
-size_t	strings_length(char **strings)
+size_t	count_strings(char **strings)
 {
 	size_t	length;
 
@@ -50,7 +50,7 @@ char	**copy_strings(char **strings)
 	size_t	length;
 
 	i = 0;
-	if (!(length = strings_length(strings)))
+	if (!(length = count_strings(strings)))
 		return (NULL);
 	new = strings_allocate(length);
 	while (i < length)

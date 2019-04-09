@@ -6,7 +6,7 @@
 /*   By: anton <anton@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/24 16:16:33 by gscolera          #+#    #+#             */
-/*   Updated: 2019/04/08 20:27:41 by gscolera         ###   ########.fr       */
+/*   Updated: 2019/04/09 21:48:24 by gscolera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,10 @@ void				shell_split_commands(t_shell *sh, t_command *cmd_list);
  ********************EXECUTER************************************************************
  */
 void				shell_execute(t_shell *sh);
+void				shell_find_binary(t_shell *sh, char **argv);
+void				shell_run_binary(t_shell *sh);
+void				shell_setenv(t_shell *sh, char **argv);
+void				shell_unsetenv(t_shell *sh, char **argv);
 /*
  *********************HELPERS************************************************************
  */

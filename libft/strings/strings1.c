@@ -8,7 +8,7 @@ bool	string_add(char ***string, char *str)
 	int		i;
 
 	ptr = *string;
-	new = strings_allocate(strings_length(ptr) + 1);
+	new = strings_allocate(count_strings(ptr) + 1);
 	if (!new)
 		return (0);
 	i = -1;
@@ -20,31 +20,21 @@ bool	string_add(char ***string, char *str)
 	return (1);
 }
 
-bool	string_delete(char ***string, char *str)
+bool	string_delete(char **string, char *str)
 {
-	char	**new;
-	size_t	length;
-	size_t	i;
-	size_t	j;
+	int	  i;
 
-	if (!(length = strings_length(string[0])))
+	if (!string_search(string, str))
 		return (0);
-	if (!(new = strings_allocate(length - 1)))
-		return (0);
-	i = 0;
-	j = 0;
-	while (string[0][j])
+	i = -1;
+	while (string[++i])
 	{
-		if (ft_strncmp(string[0][j], str, ft_strlen(str)))
-			new[i++] = string[0][j++];
-		else
-		{
-			ft_strdel(&string[0][j]);
-			j++;
-		}
+		if (ft_strequ(string[i], str))
+			ft_strdel(&string[i]);
 	}
-	free(string[0]);
-	string[0] = new;
+	while (string[++i])
+		string[i - 1] = string[i];
+	string[i - 1] = NULL;
 	return (1);
 }
 

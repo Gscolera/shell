@@ -6,51 +6,43 @@
 /*   By: gscolera <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/08 17:27:53 by gscolera          #+#    #+#             */
-/*   Updated: 2019/04/08 21:27:14 by gscolera         ###   ########.fr       */
+/*   Updated: 2019/04/09 15:51:11 by gscolera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-static void		shell_get_next_arg(t_shell *sh, t_command *cmd_list, char *cmd)
+static char		*shell_fill_buffer(char *buffer, char *cmd, char start)
 {
-	char	start;
-	int		i;
-
-	i = -1;
-	start = *cmd;
 	if (QUOTE(start))
 	{
 		cmd++;
-		while (cmd[++i] != start)
-			NULL;
-		cmd[i] = '\0';
-		ft_printf("\n ARGV %s", cmd);
-		string_add(&cmd_list->argv, cmd);
+		while (*cmd != start)
+			*(buffer++) = *(cmd++);
 	}
-	else
+	else 
 	{
-		while (cmd[i] && cmd[i] > 32)
-			i++;
-		cmd[i] == '\0';	
-		ft_printf("\n ARGV %s", cmd);
-		string_add(&cmd_list->argv, cmd);
+		while (*cmd && !QUOTE(*cmd) && *cmd > 32)
+			*(buffer++) = *(cmd++);
 	}
+	return ((*cmd) ? cmd : cmd - 1);
 }
 
 static void		shell_get_argv(t_shell *sh, t_command *cmd_list, char *cmd)
 {
-	int	i;
+	char  buffer[LINE_MAX];
 
-	i = 0;
+	ft_memset(buffer, 0, LINE_MAX);
 	while (*cmd)
 	{
-		while (*cmd && *cmd < 33)
-			cmd++;
-		shell_get_next_arg(sh, cmd_list, cmd);
-		cmd += ft_strlen(cmd_list->argv[i++]) + 1;
+		if (*cmd > 32)
+		{
+			cmd = shell_fill_buffer(buffer, cmd, *cmd);
+			string_add(&cmd_list->argv, buffer);
+			ft_strclr(buffer);
+		}
+		cmd++;
 	}
-	
 }
 
 void			shell_split_commands(t_shell *sh, t_command *cmd_list)

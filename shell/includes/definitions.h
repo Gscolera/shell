@@ -25,6 +25,7 @@
 # define HISTORY_SIZE	1000
 # define HOST_NAME		255
 # define BUFF_SIZE		100
+# define VAR_NAME_MAX	512
 /*
  ************KEYMAP**************************************** 
  */
@@ -138,9 +139,9 @@ typedef struct			s_shell
 	t_settings			settings;
 	t_reader			rd;
 	t_command			*cmd_list;
+	char				*binary;
 	char				*input;
 	char				**env;
-	char				**exec_paths;
 	size_t				flags;
 }						t_shell;
 

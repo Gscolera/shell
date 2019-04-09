@@ -6,7 +6,7 @@
 /*   By: gscolera <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 21:40:11 by gscolera          #+#    #+#             */
-/*   Updated: 2019/04/04 21:43:39 by gscolera         ###   ########.fr       */
+/*   Updated: 2019/04/09 19:11:56 by gscolera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,6 @@ static void	shell_allocate_memory(t_shell *sh)
 
 	if (!(sh->env = copy_strings(environ)))
 		shell_close(sh, ft_perror("shell error", "unable to copy eviron"));
-	if (!(sh->exec_paths = ft_strsplit(shell_getenv(sh->env, "PATH", 4), ':')))
-		shell_close(sh, ft_perror("shell error", "unable to get exec paths"));
 }
 
 void		shell_open(t_shell *sh)
