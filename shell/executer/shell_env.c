@@ -6,13 +6,13 @@
 /*   By: gscolera <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/09 20:18:13 by gscolera          #+#    #+#             */
-/*   Updated: 2019/04/09 21:58:25 by gscolera         ###   ########.fr       */
+/*   Updated: 2019/04/10 14:36:25 by gscolera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-static void	  shell_set_variable(t_shell *sh, char *var, char *value)
+void	  shell_set_variable(t_shell *sh, char *var, char *value)
 {
 	char  *new_env;
 	int	  i;
@@ -36,7 +36,30 @@ static void	  shell_set_variable(t_shell *sh, char *var, char *value)
 	ft_strdel(&new_env);
 }
 
-void	  shell_setenv(t_shell *sh, char **argv)
+void	  shell_delete_env(t_shell *sh, char *var)
+{
+	int	i;
+	int	len;
+
+	i = -1;
+	len = ft_strlen(var);
+	while (sh->env[++i])
+	{
+		if (ft_strnequ(sh->env[i], var, len))
+		{
+			ft_strdel(&sh->env[i]);
+			break;
+		}
+	}
+	while (sh->env[i + 1])
+	{
+		sh->env[i] = sh->env[i + 1];
+		i++;
+	}
+	sh->env[i] = NULL;
+}
+
+void		  shell_setenv(t_shell *sh, char **argv)
 {
 	if (count_strings(argv) != 3)
 	{
@@ -52,18 +75,18 @@ void	  shell_setenv(t_shell *sh, char **argv)
 	}
 }
 
-void	  shell_unsetenv(t_shell *sh, char **argv)
+void		  shell_unsetenv(t_shell *sh, char **argv)
 {
 	char	buff[VAR_NAME_MAX + 2];
 	int		i;
 
-	i = -1;
+	i = 0;
 	ft_memset(buff, 0, VAR_NAME_MAX + 2);
 	while (argv[++i])
 	{	
 		ft_strcat(buff, argv[i]);
 		ft_strcat(buff, "=");
-		string_delete(sh->env, buff);
+		shell_delete_env(sh, buff);
 		ft_strclr(buff);
 	}
 }

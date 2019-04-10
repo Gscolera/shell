@@ -1,23 +1,5 @@
 #include "shell.h"
 
-void	test(t_shell *sh, t_reader *rd)
-{
-	int fd = open("test", O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
-	
-	ft_putstr_fd("CRS X ", fd);
-	ft_putnbr_fd(rd->crs.x, fd);
-	ft_putstr_fd("\nCRS Y ", fd);
-	ft_putnbr_fd(rd->crs.y, fd);
-	ft_putstr_fd("\nIC ", fd);
-	ft_putnbr_fd(rd->ic, fd);
-	ft_putstr_fd("\nIL X ", fd);
-	ft_putnbr_fd(rd->il, fd);
-	ft_putstr_fd("\nPL ", fd);
-	ft_putnbr_fd(sh->settings.promt_len, fd);
-	ft_putchar_fd('\n', fd);
-	close(fd);
-}
-
 static long	int shell_get_key(char *buff)
 {
 	if (!buff[1])
@@ -47,6 +29,10 @@ static void	shell_additional_events(t_shell *sh, t_reader *rd, long int key)
 		shell_mvcnpw(sh, rd, key);
 	else if (key == SHKEYDOWN || key == SHKEYUP)
 		shell_mvcnpl(sh, rd, key);
+	else if (key == KEYESC && sh->flags & CHOOSING)
+		shell_cmplt_end(sh);
+	else if (key == KEYENTER && sh->flags & CHOOSING)
+		shell_accept_option(sh);
 }
 
 void		shell_parse_events(t_shell *sh, t_reader *rd, char *buff)
@@ -55,7 +41,7 @@ void		shell_parse_events(t_shell *sh, t_reader *rd, char *buff)
 
 	key = shell_get_key(buff);
 	//ft_printf("%d ", key);
-	if (key == KEYESC)
+	if (key == KEYESC && !(sh->flags & CHOOSING))
 		shell_close(sh, EXIT_SUCCESS);
 	else if (key == KEYLEFT && rd->ic > 0)
 		shell_mvcl(sh, rd);
@@ -65,12 +51,12 @@ void		shell_parse_events(t_shell *sh, t_reader *rd, char *buff)
 		shell_mvch(sh, rd);
 	else if (key == KEYEND)
 		shell_mvce(sh, rd);
-	else if (key == KEYENTER)
-		sh->flags &= ~READING;
+	else if (key == KEYENTER && !(sh->flags & CHOOSING))
+		sh->flags &=  ~READING;
 	else if (key == KEYUP || key == KEYDOWN)
 		shell_scroll_history(sh, rd, key);
-	else if (key == KEYTAB)
-		shell_autocomplete(sh, rd);
+	else if (key == KEYTAB && rd->il > 0 && !(sh->flags & CHOOSING))
+		shell_autocomplete(sh);
 	else if (key == KEYDEL || key == KEYBS || key == KEYCRTLD)
 		shell_delete_char(sh, rd, key);
 	else

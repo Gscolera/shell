@@ -6,7 +6,7 @@
 /*   By: gscolera <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 17:55:22 by gscolera          #+#    #+#             */
-/*   Updated: 2019/04/09 21:49:17 by gscolera         ###   ########.fr       */
+/*   Updated: 2019/04/10 14:41:05 by gscolera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,12 @@ static bool	shell_execute_builtin(t_shell *sh, char *bin)
 	if (ft_strequ(bin, "exit"))
 		shell_close(sh, EXIT_SUCCESS);
 	else if (ft_strequ(bin, "cd"))
-		NULL;
+		shell_change_dir(sh, sh->cmd_list->argv);
 	else if (ft_strequ(bin, "setenv"))
 		shell_setenv(sh, sh->cmd_list->argv);
 	else if (ft_strequ(bin, "unsetenv"))
 		shell_unsetenv(sh, sh->cmd_list->argv);
-	else if (ft_strequ(bin, "echo"))
+	else if (ft_strequ(bin, "echo!"))
 		NULL;
 	else if (ft_strequ(bin, "env"))
 		print_strings(sh->env);

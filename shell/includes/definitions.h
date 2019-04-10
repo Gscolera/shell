@@ -11,6 +11,7 @@
 # include <sys/ioctl.h>
 # include <sys/types.h>
 # include <pwd.h>
+# include <dirent.h>
 # include <fcntl.h>
 
 # define TERM_ACTION(x)	tputs(sh->rd.esc[x], fileno(stdin), ft_putchar)
@@ -54,6 +55,7 @@
 # define SQT			(1 << 2)
 # define DQT			(1 << 3)
 # define SPC			(1 << 4)
+# define CHOOSING		(1 << 5)
 /*
  *************ACCES FLAGS**********************************
  */
@@ -118,13 +120,8 @@ typedef	struct			s_reader
 
 typedef struct			s_cmplt
 {
-	char				*line;
-	char				*option_first;
-	char				*option_current;
-	char				*option_next;
-	char				*option_last;
-	int					fd;
-	size_t				total_options;
+	char				*option;
+	struct s_cmplt		*next;
 }						t_cmplt;
 
 typedef struct			s_command
@@ -139,8 +136,12 @@ typedef struct			s_shell
 	t_settings			settings;
 	t_reader			rd;
 	t_command			*cmd_list;
+	t_cmplt				*cmp_list;
+	t_cmplt				*act_list;
+	char				cmp[LINE_MAX];
 	char				*binary;
 	char				*input;
+	char				**path;
 	char				**env;
 	size_t				flags;
 }						t_shell;

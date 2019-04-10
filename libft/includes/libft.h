@@ -6,7 +6,7 @@
 /*   By: gscolera <gscolera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/23 15:21:15 by gscolera          #+#    #+#             */
-/*   Updated: 2019/04/09 21:56:15 by gscolera         ###   ########.fr       */
+/*   Updated: 2019/04/10 13:03:20 by gscolera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ void			print_strings(char **str);
 size_t			count_strings(char **strings);
 char			**copy_strings(char **strings);
 bool			string_add(char ***string, char *str);
-bool			string_delete(char **string, char *str);
 char			*string_search(char **string, char *srhc);
 size_t			ft_strlen(const char *str);
 char			*ft_strdup(const char *src);

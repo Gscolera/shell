@@ -1,21 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strdel.c                                        :+:      :+:    :+:   */
+/*   shell_accept_option.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gscolera <gscolera@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gscolera <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/11/22 18:41:27 by gscolera          #+#    #+#             */
-/*   Updated: 2019/04/10 21:46:03 by gscolera         ###   ########.fr       */
+/*   Created: 2019/04/10 21:11:42 by gscolera          #+#    #+#             */
+/*   Updated: 2019/04/10 21:20:47 by gscolera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "shell.h"
 
-void	ft_strdel(char **as)
+void	shell_accept_option(t_shell *sh)
 {
-	if (!as || !*as)
-		return ;
-	free(*as);
-	*as = NULL;
+	shell_cmplt_end(sh);
 }

@@ -6,7 +6,7 @@
 /*   By: anton <anton@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/24 16:16:33 by gscolera          #+#    #+#             */
-/*   Updated: 2019/04/09 21:48:24 by gscolera         ###   ########.fr       */
+/*   Updated: 2019/04/10 21:47:02 by gscolera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,16 @@ void				shell_scroll_history(t_shell *sh, t_reader *rd, int keycode);
 /*
  ********************AUTOCOMPLETE******************************************************** 
  */
-void				shell_autocomplete(t_shell *sh, t_reader *rd);
-void				shell_arg_srch(t_shell *sh, t_reader *rd, t_cmplt *list);
-void				shell_cmd_srch(t_shell *sh, t_reader *rd, t_cmplt *list);
+void				shell_autocomplete(t_shell *sh);
+void				shell_search_for_argument(t_shell *sh);
+void				shell_search_for_command(t_shell *sh);
+void				shell_search_for_options(t_shell *sh, DIR *dir);
+void				shell_insert_option(t_shell *sh, t_cmplt *new_list);
+void				shell_complete_input(t_shell *sh, t_cmplt *list);
+void				shell_choose_option(t_shell *sh, t_cmplt *list);
+void				shell_check_options(t_shell *sh, t_cmplt *list);
+void				shell_accept_option(t_shell *sh);
+void				shell_cmplt_end(t_shell *sh);
 /*
  ********************CURSOR MOTION******************************************************* 
  */
@@ -60,7 +67,10 @@ void				shell_execute(t_shell *sh);
 void				shell_find_binary(t_shell *sh, char **argv);
 void				shell_run_binary(t_shell *sh);
 void				shell_setenv(t_shell *sh, char **argv);
+void				shell_set_variable(t_shell *sh, char *var, char *value);
+void				shell_delete_env(t_shell *sh, char *var);
 void				shell_unsetenv(t_shell *sh, char **argv);
+int					shell_change_dir(t_shell *sh, char **argv);
 /*
  *********************HELPERS************************************************************
  */

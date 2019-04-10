@@ -1,6 +1,6 @@
 #include "shell.h"
 
-void	shell_arg_srch(t_shell *sh, t_reader *rd, t_cmplt *list)
+void	shell_search_for_argument(t_shell *sh)
 {
 	
 }

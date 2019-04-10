@@ -20,24 +20,6 @@ bool	string_add(char ***string, char *str)
 	return (1);
 }
 
-bool	string_delete(char **string, char *str)
-{
-	int	  i;
-
-	if (!string_search(string, str))
-		return (0);
-	i = -1;
-	while (string[++i])
-	{
-		if (ft_strequ(string[i], str))
-			ft_strdel(&string[i]);
-	}
-	while (string[++i])
-		string[i - 1] = string[i];
-	string[i - 1] = NULL;
-	return (1);
-}
-
 char	*string_search(char **string, char *srch)
 {
 	size_t	i;
@@ -49,7 +31,7 @@ char	*string_search(char **string, char *srch)
 	length = ft_strlen(srch);
 	while (string[i])
 	{
-		if (!ft_strncmp(string[i], srch, length))
+		if (ft_strnequ(string[i], srch, length))
 			return (string[i]);
 		i++;
 	}
