@@ -30,12 +30,40 @@ static void	shell_add_option(t_shell *sh, char *option)
 void	shell_search_for_options(t_shell *sh, DIR *dir)
 {
 	struct dirent	*sd;
-	int				len;
+	struct stat		st;
+	size_t			len;
+	size_t			opt_len;
 
 	len = ft_strlen(sh->input);
 	while ((sd = readdir(dir)))
 	{
+		if (sh->flags & ONLYDIR && !(sd->d_type & DT_DIR))
+			continue ;
 		if (ft_strnequ(sd->d_name, sh->input, len))
+		{
 			shell_add_option(sh, ft_strdup(sd->d_name));
+			sh->options.count++;
+			opt_len = ft_strlen(sd->d_name) + 2;
+			sh->options.len += opt_len;
+			if (sh->options.max_len < opt_len)
+				sh->options.max_len = opt_len;
+		}
 	}
+}
+
+void	shell_search_builtin(t_shell *sh)
+{
+	int	len;
+
+	len = ft_strlen(sh->input);
+	if (ft_strnequ(sh->input, "setenv", len))
+		shell_add_option(sh, ft_strdup("setenv"));
+	if (ft_strnequ(sh->input, "unsetenv", len))
+		shell_add_option(sh, ft_strdup("unsetenv"));
+	if (ft_strnequ(sh->input, "cd", len))
+		shell_add_option(sh, ft_strdup("cd"));
+	if (ft_strnequ(sh->input, "env", len))
+		shell_add_option(sh, ft_strdup("env"));
+	if (ft_strnequ(sh->input, "exit", len))
+		shell_add_option(sh, ft_strdup("exit"));
 }

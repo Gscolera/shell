@@ -73,7 +73,6 @@ void	shell_read_input(t_shell *sh, t_reader *rd)
 		ft_strclr(rd->buffer);
 		read(fileno(stdin), rd->buffer, LINE_MAX);
 		shell_parse_buffer(sh, rd, rd->buffer);
-		(sh->flags & CHOOSING) ? shell_autocomplete(sh) : NULL;
 	}
 	sh->input = ft_strdup(rd->history->data);
 }

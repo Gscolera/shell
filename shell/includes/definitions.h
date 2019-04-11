@@ -56,6 +56,8 @@
 # define DQT			(1 << 3)
 # define SPC			(1 << 4)
 # define CHOOSING		(1 << 5)
+# define ONLYDIR		(1 << 6)
+# define ONLYEXEC		(1 << 7)
 /*
  *************ACCES FLAGS**********************************
  */
@@ -131,6 +133,13 @@ typedef struct			s_command
 	struct s_command	*next;
 }						t_command;
 
+typedef struct			s_opt_count
+{
+	size_t				len;
+	size_t				max_len;
+	size_t				count;
+}						t_opt_count;
+
 typedef struct			s_shell
 {
 	t_settings			settings;
@@ -138,7 +147,7 @@ typedef struct			s_shell
 	t_command			*cmd_list;
 	t_cmplt				*cmp_list;
 	t_cmplt				*act_list;
-	char				cmp[LINE_MAX];
+	t_opt_count			options;
 	char				*binary;
 	char				*input;
 	char				**path;

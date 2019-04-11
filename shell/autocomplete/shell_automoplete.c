@@ -1,6 +1,6 @@
 #include "shell.h"
 
-void		shell_cmplt_end(t_shell *sh)
+void		shell_close_autocomplete(t_shell *sh)
 {
 	t_cmplt	*tmp;
 
@@ -12,14 +12,18 @@ void		shell_cmplt_end(t_shell *sh)
 		sh->cmp_list = tmp;
 	}
 	sh->cmp_list = NULL;
-	free_strings(sh->path);
-	sh->flags &= ~ CHOOSING;
+	sh->act_list = NULL;
+	ft_strdel(&sh->input);
+	sh->flags &= ~(CHOOSING | ONLYDIR | ONLYEXEC);
+	sh->options.len = 0;
+	sh->options.max_len = 0;
+	sh->options.count = 0;
 	TERM_ACTION(CD);
 }
 
-void		shell_complete_input(t_shell *sh, t_cmplt *list)
+void		shell_accept_option(t_shell *sh, t_cmplt *list)
 {
-	int	i;
+	int		i;
 
 	i = ft_strlen(sh->input);
 	while (list->option[i])
@@ -28,18 +32,23 @@ void		shell_complete_input(t_shell *sh, t_cmplt *list)
 
 void		shell_autocomplete(t_shell *sh)
 {
+	char	*cmplt_fragment;
+
 	shell_mvce(sh, &sh->rd);
-	ft_strclr(sh->cmp);
-	ft_strcpy(sh->cmp, sh->history->data);
-	(sh->cmp_list) ? shell_check_options(sh, sh->cmp_list) : NULL;
-	if (!sh->cmp_list && !ft_strchr(sh->cmp, ' '))
-		shell_search_for_arguments()
-	
-	TERM_ACTION(SAVEC);
-	TERM_ACTION(DOWN);
-	ft_printf("COMPLETING");
-	TERM_ACTION(RSRC);
-	sh->flags |= CHOOSING;
-		
-	
+	cmplt_fragment = ft_strrchr(sh->rd.history->data, ' ');
+	if (cmplt_fragment)
+	{
+		if (!*(cmplt_fragment + 1))
+			sh->input = NULL;
+		else if (!(sh->input = ft_strdup(++cmplt_fragment)))
+			shell_close(sh, ft_perror("shell", "malloc error"));
+		shell_search_for_argument(sh);
+	}
+	else if (!cmplt_fragment)
+	{
+		if (!(sh->input = ft_strdup(sh->rd.history->data)))
+			shell_close(sh, ft_perror("shell", "malloc error"));
+		shell_search_for_command(sh);
+	}
+	shell_close_autocomplete(sh);
 }

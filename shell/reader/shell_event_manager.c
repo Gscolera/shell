@@ -29,10 +29,6 @@ static void	shell_additional_events(t_shell *sh, t_reader *rd, long int key)
 		shell_mvcnpw(sh, rd, key);
 	else if (key == SHKEYDOWN || key == SHKEYUP)
 		shell_mvcnpl(sh, rd, key);
-	else if (key == KEYESC && sh->flags & CHOOSING)
-		shell_cmplt_end(sh);
-	else if (key == KEYENTER && sh->flags & CHOOSING)
-		shell_accept_option(sh);
 }
 
 void		shell_parse_events(t_shell *sh, t_reader *rd, char *buff)
@@ -55,7 +51,7 @@ void		shell_parse_events(t_shell *sh, t_reader *rd, char *buff)
 		sh->flags &=  ~READING;
 	else if (key == KEYUP || key == KEYDOWN)
 		shell_scroll_history(sh, rd, key);
-	else if (key == KEYTAB && rd->il > 0 && !(sh->flags & CHOOSING))
+	else if (key == KEYTAB && rd->il > 0)
 		shell_autocomplete(sh);
 	else if (key == KEYDEL || key == KEYBS || key == KEYCRTLD)
 		shell_delete_char(sh, rd, key);

@@ -38,11 +38,13 @@ void	  shell_set_variable(t_shell *sh, char *var, char *value)
 
 void	  shell_delete_env(t_shell *sh, char *var)
 {
-	int	i;
-	int	len;
+	int		i;
+	int		len;
 
 	i = -1;
 	len = ft_strlen(var);
+	if (!string_search(sh->env, var))
+		return ;
 	while (sh->env[++i])
 	{
 		if (ft_strnequ(sh->env[i], var, len))

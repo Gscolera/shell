@@ -12,54 +12,75 @@
 
 #include "shell.h"
 
-static void	shell_print_options(t_shell *sh, t_cmplt *list)
+static void	shell_print_in_colums(t_shell *sh, t_cmplt *list)
 {
+	size_t	row_capacity;
+	size_t	left_in_row;
+
+	row_capacity = (sh->settings.window_size.x - 10) / sh->options.max_len;
+	while (list)
+	{
+		left_in_row = row_capacity;
+		while (list && left_in_row--)
+		{
+			if (sh->act_list == list)
+				ft_printf("{red}%-*s{eoc}", sh->options.max_len, list->option);
+			else
+				ft_printf("%-*s", sh->options.max_len, list->option);
+			list = list->next;
+		}
+		TERM_ACTION(DOWN);
+	}
+}
+
+static void	shell_print_options(t_shell *sh, t_cmplt *list)
+{	
 	TERM_ACTION(SAVEC);
 	TERM_ACTION(CD);
 	TERM_ACTION(DOWN);
-	while (list)
+	if (!sh->act_list || !sh->act_list->next)
+		sh->act_list = sh->cmp_list;
+	else
+		sh->act_list = sh->act_list->next;
+	if (sh->options.len >= sh->settings.window_size.x - 10)
+		shell_print_in_colums(sh, list);
+	else
 	{
-		if (sh->act_list == list)
-			ft_printf("{red}{bold}%s  {eoc}", list->option);
-		else
-			ft_printf("%s ", list->option);
-		list = list->next;
-	}
-	TERM_ACTION(RSRC);
-	sh->act_list = (sh->act_list->next) ? sh->act_list->next : sh->cmp_list;
-}
-
-static void	shell_parse_options(t_shell *sh, t_cmplt *list, char *buffer)
-{
-	int	i;
-
-	i = -1;
-	while (buffer[++i])
-	{
-		if (buffer[i] == KEYTAB)
-			shell_print_options(sh, list);
-		else if (buffer[i] == KEYENTER)
-			sh->flags &= ~CHOOSING;
-		else if (ft_isprint(buffer[i]))
+		while (list)
 		{
-			shell_insert_char(sh, &sh->rd, buffer[i]);
-			sh->flags &= ~CHOOSING;
+			if (sh->act_list == list)
+				ft_printf("{red}%s  {eoc}", list->option);
+			else
+				ft_printf("%s ", list->option);
+			list = list->next;
 		}
 	}
-	ft_strclr(buffer);
+	TERM_ACTION(RSRC);
 }
 
 void		shell_choose_option(t_shell *sh, t_cmplt *list)
 {
-	char 	buff[LINE_MAX + 1];
+	char 	buff[10];
 
-	ft_memset(buff, 0, LINE_MAX + 1);
-	sh->act_list = sh->cmp_list;
+	ft_memset(buff, 0, 10);
 	shell_print_options(sh, list);
-	sh->flags |= CHOOSING;
 	while (sh->flags & CHOOSING)
 	{
-		read(fileno(stdin), buff, LINE_MAX);
-		shell_parse_options(sh, list, buff);
+		read(fileno(stdin), buff, 10);
+		if (buff[0] == KEYTAB)
+			shell_print_options(sh, list);
+		else if (buff[0] == KEYENTER)
+		{
+			shell_accept_option(sh, sh->act_list);
+			sh->flags &= ~CHOOSING;
+		}
+		else if (buff[0] == KEYESC)
+			sh->flags &= ~CHOOSING;
+		else if (ft_isprint(buff[0]))
+		{
+			shell_insert_char(sh, &sh->rd, buff[0]);
+			sh->flags &= ~CHOOSING;
+		}
+		ft_strclr(buff);
 	}
 }

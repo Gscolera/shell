@@ -36,11 +36,11 @@ void				shell_search_for_argument(t_shell *sh);
 void				shell_search_for_command(t_shell *sh);
 void				shell_search_for_options(t_shell *sh, DIR *dir);
 void				shell_insert_option(t_shell *sh, t_cmplt *new_list);
-void				shell_complete_input(t_shell *sh, t_cmplt *list);
 void				shell_choose_option(t_shell *sh, t_cmplt *list);
 void				shell_check_options(t_shell *sh, t_cmplt *list);
-void				shell_accept_option(t_shell *sh);
-void				shell_cmplt_end(t_shell *sh);
+void				shell_accept_option(t_shell *sh, t_cmplt *list);
+void				shell_search_builtin(t_shell *sh);
+void				shell_close_autocomplete(t_shell *sh);
 /*
  ********************CURSOR MOTION******************************************************* 
  */
@@ -84,5 +84,9 @@ void				shell_count_promt_len(t_settings *settings, char *promt);
 void				shell_delete_char(t_shell *sh, t_reader *rd, int key);
 void				shell_delete_characters(char *string, char *dlt);
 void				shell_switch_flag(t_shell *sh, int flag);
+char				*shell_extract_path(char *input);
+char				*shell_check_path(t_shell *sh, char *input);
+char				*shell_get_current_path(void);
+bool				shell_is_path(char *input);
 
 #endif

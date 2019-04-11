@@ -7,6 +7,11 @@ char	*shell_expand_home(t_shell *sh, char *string, int i)
 	int		j;
 
 	value = shell_getenv(sh->env, "HOME", 4);
+	if (!value)
+	{
+		ft_delete_char(string, i);
+		return (string);
+	}
 	expanded = ft_strnew(ft_strlen(string) + ft_strlen(value) - 1);
 	if (!expanded)
 		shell_close(sh, ft_perror("shell", "malloc error"));

@@ -36,13 +36,24 @@ static void	shell_set_pwd(t_shell *sh, char *dir)
 
 int		shell_change_dir(t_shell *sh, char **av)
 {
-	char	*dir;
+	char		*dir;
+	size_t		count;
 
-	if (count_strings(av) != 2)
+	count = count_strings(av);
+	if (count > 2)
 		return (ft_perror("cd", "wrong amount of arguments"));
-	dir = (ft_strequ(av[1], "-")) ? shell_getenv(sh->env, "OLDPWD", 6) : av[1];
-	if (!dir)
-		return (ft_perror("cd", "OLDPWD not set"));	
+	else if (count == 1)
+	{
+		if (!(dir = shell_getenv(sh->env, "HOME", 4)))
+			return (ft_perror("cd", "variable home not set"));
+	}
+	else if (ft_strequ(av[1], "-"))
+	{
+		if (!(dir = shell_getenv(sh->env, "OLDPWD", 6)))
+			return (ft_perror("cd", "OLDPWD not set"));	
+	}
+	else
+		dir = av[1];
 	if (chdir(dir) == -1)
 		return (shell_print_chdir_error(dir));
 	shell_set_pwd(sh, av[1]);
