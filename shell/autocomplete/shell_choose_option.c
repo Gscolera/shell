@@ -12,6 +12,11 @@
 
 #include "shell.h"
 
+void	shell_too_much_options(t_shell *sh)
+{
+	ft_printf("There are %d possibilies", sh->options.count);
+}
+
 static void	shell_print_in_colums(t_shell *sh, t_cmplt *list)
 {
 	size_t	row_capacity;
@@ -42,7 +47,9 @@ static void	shell_print_options(t_shell *sh, t_cmplt *list)
 		sh->act_list = sh->cmp_list;
 	else
 		sh->act_list = sh->act_list->next;
-	if (sh->options.len >= sh->settings.window_size.x - 10)
+	if (sh->options.count > 100)
+		shell_too_much_options(sh);
+	else if (sh->options.len >= sh->settings.window_size.x - 10)
 		shell_print_in_colums(sh, list);
 	else
 	{

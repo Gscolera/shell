@@ -88,5 +88,6 @@ char				*shell_extract_path(char *input);
 char				*shell_check_path(t_shell *sh, char *input);
 char				*shell_get_current_path(void);
 bool				shell_is_path(char *input);
+void				shell_signal_init(t_shell *sh);
 
 #endif

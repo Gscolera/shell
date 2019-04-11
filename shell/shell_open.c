@@ -64,6 +64,7 @@ void		shell_open(t_shell *sh)
 	if (!(ret = tgetent(NULL, ttype) || !(ret = tgetent(NULL, DEFAULT_TERM))))
 		shell_close(sh, ft_perror("shell", "terminal type is not defined"));
 	else if (ret == -1)
-		shell_close(sh, ft_perror("shell", "could not access to termcap database"));
+		shell_close(sh, ft_perror("shell", "no access to termcap database"));
 	shell_get_escape_sequences(&sh->rd);
+	shell_signal_init(sh);
 }

@@ -67,7 +67,7 @@ void	shell_read_input(t_shell *sh, t_reader *rd)
 	rd->crs.y = 0;
 	shell_create_history_list(sh, rd);
 	shell_expand_promt(sh);
-	sh->flags |= READING;	
+	sh->flags |= READING;
 	while (sh->flags & READING)
 	{
 		ft_strclr(rd->buffer);

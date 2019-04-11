@@ -1,7 +1,12 @@
 #include <stdio.h>
+#include <unistd.h>
 
 int	  main(void)
 {
-	printf("Hello\n");
+	while (1)
+	{
+		printf("Hello\n");
+		sleep(1);
+	}
 	return (0);
 }

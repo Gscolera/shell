@@ -2,8 +2,6 @@
 
 int		main(void)
 {
-	t_shell sh;
-
 	shell_open(&sh);
 	ft_putstr("\033]2;MINIFUCKINGSHELL\007");
 	tputs(sh.rd.esc[CLR], fileno(stdin), ft_putchar);

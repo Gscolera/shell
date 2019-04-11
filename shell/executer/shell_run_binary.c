@@ -22,17 +22,16 @@ void  shell_print_error(t_shell *sh)
 
 void  shell_run_binary(t_shell *sh)
 {
-	pid_t	pid;
 	int		state;
 
 	if (!sh->binary)
 		shell_print_error(sh);
 	else
 	{
-		pid = fork();
-		if (pid == -1)
+		sh->pid = fork();
+		if (sh->pid == -1)
 			ft_perror("shell", "fork error");
-		if (!pid)
+		if (!sh->pid)
 		{
 			state = execve(sh->binary, sh->cmd_list->argv, sh->env);
 			if (state == -1)
@@ -40,6 +39,7 @@ void  shell_run_binary(t_shell *sh)
 			exit(state);
 		}
 		else
-			waitpid(pid, NULL, 0);
+			waitpid(sh->pid, NULL, 0);
 	}
+	sh->pid = 0;
 }

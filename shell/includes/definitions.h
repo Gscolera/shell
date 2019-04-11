@@ -13,6 +13,7 @@
 # include <pwd.h>
 # include <dirent.h>
 # include <fcntl.h>
+# include <signal.h>
 
 # define TERM_ACTION(x)	tputs(sh->rd.esc[x], fileno(stdin), ft_putchar)
 # define QUOTE(c)		(c == '\'' || c == '\"')
@@ -148,6 +149,7 @@ typedef struct			s_shell
 	t_cmplt				*cmp_list;
 	t_cmplt				*act_list;
 	t_opt_count			options;
+	pid_t				pid;
 	char				*binary;
 	char				*input;
 	char				**path;
@@ -155,4 +157,5 @@ typedef struct			s_shell
 	size_t				flags;
 }						t_shell;
 
+t_shell					sh;
 #endif
