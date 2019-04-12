@@ -6,7 +6,7 @@
 /*   By: gscolera <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/12 14:54:13 by gscolera          #+#    #+#             */
-/*   Updated: 2019/04/12 15:08:12 by gscolera         ###   ########.fr       */
+/*   Updated: 2019/04/12 21:53:17 by gscolera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@
 # define ONLYEXEC		(1 << 7)
 # define SHELL_SIGINT	(1 << 8)
 # define INPUT_VALID	(1 << 9)
+# define SHELL_SIGQUIT	(1 << 10)
 
 /*
  *************ACCES FLAGS**********************************

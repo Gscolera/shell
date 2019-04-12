@@ -6,7 +6,7 @@
 /*   By: gscolera <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 21:40:11 by gscolera          #+#    #+#             */
-/*   Updated: 2019/04/12 14:58:52 by gscolera         ###   ########.fr       */
+/*   Updated: 2019/04/12 21:25:42 by gscolera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ static void	shell_get_settings(t_shell *sh, t_settings *settings)
 	settings->term_shell.c_lflag &= ~(ECHO | ICANON);
 	settings->term_shell.c_cc[VMIN] = 0;
 	settings->term_shell.c_cc[VTIME] = 0;
-	tcsetattr(0, TCSANOW, &settings->term_shell);
 	if (!settings->promt[0])
 		shell_get_promt(settings);
 	if (settings->history_buffsize < 1)

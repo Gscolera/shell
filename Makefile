@@ -1,4 +1,4 @@
-NAME = minishell
+NAME = 21sh
 SRC = shell/*.c shell/helpers/*.c shell/lexer/*.c shell/reader/*.c shell/autocomplete/*.c shell/executer/*.c shell/signals/*.c
 OBJ = $(SRC:.c = .o)
 LIBFT = -L libft -lft
@@ -7,9 +7,7 @@ INC = -I shell/includes -I libft/includes
 FLAGS = -Wall -Werror -Wextra
 
 $(NAME): $(OBJ)
-	make re -C libft
-	gcc $(FLAGS) $(OBJ) $(INC) $(LIBFT) $(TERMCAP) -o $(NAME)
-	make clean -C libft
+	gcc  $(OBJ) $(INC) $(LIBFT) $(TERMCAP) -o $(NAME)
 
 all: $(NAME)
 

@@ -6,7 +6,7 @@
 /*   By: gscolera <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/12 14:54:52 by gscolera          #+#    #+#             */
-/*   Updated: 2019/04/12 15:00:23 by gscolera         ###   ########.fr       */
+/*   Updated: 2019/04/12 21:56:31 by gscolera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ static void	shell_expand_promt(t_shell *sh)
 
 void		shell_read_input(t_shell *sh, t_reader *rd)
 {
+	tcsetattr(0, TCSANOW, &sh->settings.term_shell);
 	shell_create_history_list(sh, rd);
 	shell_expand_promt(sh);
 	g_flags |= READING;
@@ -94,6 +95,13 @@ void		shell_read_input(t_shell *sh, t_reader *rd)
 			shell_expand_promt(sh);
 			g_flags &= ~SHELL_SIGINT;
 		}
+		if (g_flags & SHELL_SIGQUIT)
+		{
+			ft_printf("hello\n");
+			g_flags &= ~SHELL_SIGQUIT;
+
+		}
 	}
-	sh->input = ft_strdup(rd->history->data);
+	sh->input = ft_strtrim(rd->history->data);
+	tcsetattr(0, TCSANOW, &sh->settings.term_default);
 }
