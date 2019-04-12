@@ -6,7 +6,7 @@
 /*   By: anton <anton@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/13 15:46:49 by gscolera          #+#    #+#             */
-/*   Updated: 2019/03/10 22:12:50 by anton            ###   ########.fr       */
+/*   Updated: 2019/04/12 14:42:50 by gscolera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ static void	print_hex(FORMAT *f, UINTMAX hex, int size)
 void		manage_hex(FORMAT *f)
 {
 	int			size;
-	UINTMAX	hex;
+	UINTMAX		hex;
 
 	get_hex(f, &hex);
 	get_size(f, hex, &size);

@@ -6,16 +6,16 @@
 /*   By: gscolera <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/08 20:25:55 by gscolera          #+#    #+#             */
-/*   Updated: 2019/04/08 20:29:57 by gscolera         ###   ########.fr       */
+/*   Updated: 2019/04/12 14:54:09 by gscolera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-void	shell_switch_flag(t_shell *sh, int flag)
+void	shell_switch_flag(int flag)
 {
-	if (sh->flags & flag)
-		sh->flags &= ~flag;
+	if (g_flags & flag)
+		g_flags &= ~flag;
 	else
-		sh->flags |= flag;
+		g_flags |= flag;
 }

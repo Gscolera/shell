@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   definitions.h                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gscolera <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/04/12 14:54:13 by gscolera          #+#    #+#             */
+/*   Updated: 2019/04/12 15:08:12 by gscolera         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef DEFINITIONS_H
 # define DEFINITIONS_H
 
@@ -19,18 +31,20 @@
 # define QUOTE(c)		(c == '\'' || c == '\"')
 # define NQT(f)			(!(f & SQT) && !(f & DQT))
 # define BSLASH(c)		(c == '\\')
+
 /*
- ************DEFAULT_SETTINGS****************************** 
- */
+ ************DEFAULT_SETTINGS******************************
+*/
 # define DEFAULT_TERM	"xterm-256color"
 # define CONFIG_FILE	"config"
 # define HISTORY_SIZE	1000
 # define HOST_NAME		255
 # define BUFF_SIZE		100
 # define VAR_NAME_MAX	512
+
 /*
- ************KEYMAP**************************************** 
- */
+ ************KEYMAP****************************************
+*/
 
 # define KEYUP			1792833
 # define KEYDOWN		1792834
@@ -48,9 +62,10 @@
 # define SHKEYRIGHT		30078481936963
 # define SHKEYUP		30078481936961
 # define SHKEYDOWN		30078481936962
+
 /*
  **************FLAGS****************************************
- */
+*/
 # define READING		(1 << 0)
 # define BSL			(1 << 1)
 # define SQT			(1 << 2)
@@ -59,16 +74,19 @@
 # define CHOOSING		(1 << 5)
 # define ONLYDIR		(1 << 6)
 # define ONLYEXEC		(1 << 7)
+# define SHELL_SIGINT	(1 << 8)
+# define INPUT_VALID	(1 << 9)
+
 /*
  *************ACCES FLAGS**********************************
- */
+*/
 # define FILE_EXISTS	0
 # define FILE_EXEC		1
 # define FILE_WR		2
 # define FILE_RD		3
 # define FILE_RDWR		4
 
-enum					s_options
+enum					e_options
 {
 	RIGHT,
 	LEFT,
@@ -84,8 +102,8 @@ enum					s_options
 
 typedef struct			s_coordinate
 {
-	short				x;
-	short				y;
+	size_t				x;
+	size_t				y;
 }						t_coordinate;
 
 typedef struct			s_buffer
@@ -101,7 +119,6 @@ typedef struct			s_settings
 {
 	struct termios		term_default;
 	struct termios		term_shell;
-	t_coordinate		window_size;
 	char				promt[LINE_MAX];
 	size_t				history_buffsize;
 	size_t				promt_len;
@@ -154,8 +171,9 @@ typedef struct			s_shell
 	char				*input;
 	char				**path;
 	char				**env;
-	size_t				flags;
 }						t_shell;
 
-t_shell					sh;
+t_coordinate			g_window_size;
+int						g_flags;
+
 #endif

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   shell_read_config_file.c                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gscolera <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/04/12 14:54:06 by gscolera          #+#    #+#             */
+/*   Updated: 2019/04/12 15:29:00 by gscolera         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "shell.h"
 
 static void	shell_read_config_line(t_settings *settings, char *buffptr)
@@ -28,6 +40,6 @@ void		shell_read_config_file(t_shell *sh)
 				break ;
 			ft_strclr(buffptr);
 		}
-		close (fd);
+		close(fd);
 	}
 }

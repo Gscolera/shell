@@ -1,11 +1,23 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   shell_read_input.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gscolera <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/04/12 14:54:52 by gscolera          #+#    #+#             */
+/*   Updated: 2019/04/12 15:00:23 by gscolera         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "shell.h"
 
 void		shell_insert_char(t_shell *sh, t_reader *rd, char c)
 {
 	if (rd->il == rd->history->size - 2)
 	{
-		rd->history->data = (char *)ft_realloc(rd->history->data, 
-								rd->history->size, rd->history->size + BUFF_SIZE);
+		rd->history->data = (char *)ft_realloc(rd->history->data,
+							rd->history->size, rd->history->size + BUFF_SIZE);
 		if (!rd->history->data)
 			shell_close(sh, ft_perror("shell", "memory allocation error"));
 		rd->history->size += BUFF_SIZE;
@@ -16,7 +28,7 @@ void		shell_insert_char(t_shell *sh, t_reader *rd, char c)
 	TERM_ACTION(RSRC);
 	rd->ic++;
 	rd->il++;
-	if (rd->crs.x < sh->settings.window_size.x - 1)
+	if (rd->crs.x < g_window_size.x - 1)
 	{
 		TERM_ACTION(RIGHT);
 		rd->crs.x++;
@@ -26,7 +38,7 @@ void		shell_insert_char(t_shell *sh, t_reader *rd, char c)
 		rd->crs.x = 0;
 		rd->crs.y++;
 		TERM_ACTION(DOWN);
-	}	
+	}
 }
 
 static void	shell_parse_buffer(t_shell *sh, t_reader *rd, char *buffer)
@@ -51,6 +63,9 @@ static void	shell_expand_promt(t_shell *sh)
 {
 	char *promt;
 
+	sh->rd.ic = 0;
+	sh->rd.il = 0;
+	sh->rd.crs.y = 0;
 	promt = ft_strdup(sh->settings.promt);
 	promt = shell_expand_string(sh, promt);
 	shell_delete_characters(promt, "\"\'");
@@ -58,21 +73,27 @@ static void	shell_expand_promt(t_shell *sh)
 	sh->rd.crs.x = sh->settings.promt_len;
 	ft_printf(promt);
 	ft_strdel(&promt);
+	g_flags &= ~INPUT_VALID;
 }
 
-void	shell_read_input(t_shell *sh, t_reader *rd)
+void		shell_read_input(t_shell *sh, t_reader *rd)
 {
-	rd->ic = 0;
-	rd->il = 0;
-	rd->crs.y = 0;
 	shell_create_history_list(sh, rd);
 	shell_expand_promt(sh);
-	sh->flags |= READING;
-	while (sh->flags & READING)
+	g_flags |= READING;
+	while (g_flags & READING)
 	{
 		ft_strclr(rd->buffer);
 		read(fileno(stdin), rd->buffer, LINE_MAX);
 		shell_parse_buffer(sh, rd, rd->buffer);
+		if (g_flags & SHELL_SIGINT)
+		{
+			rd->buffptr = rd->history;
+			ft_strclr(rd->buffptr->data);
+			TERM_ACTION(DOWN);
+			shell_expand_promt(sh);
+			g_flags &= ~SHELL_SIGINT;
+		}
 	}
 	sh->input = ft_strdup(rd->history->data);
 }

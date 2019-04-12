@@ -6,7 +6,7 @@
 /*   By: gscolera <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 17:55:22 by gscolera          #+#    #+#             */
-/*   Updated: 2019/04/10 14:41:05 by gscolera         ###   ########.fr       */
+/*   Updated: 2019/04/12 14:53:14 by gscolera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@ static bool	shell_execute_builtin(t_shell *sh, char *bin)
 		shell_setenv(sh, sh->cmd_list->argv);
 	else if (ft_strequ(bin, "unsetenv"))
 		shell_unsetenv(sh, sh->cmd_list->argv);
-	else if (ft_strequ(bin, "echo!"))
-		NULL;
+	else if (ft_strequ(bin, "echo"))
+		shell_echo(sh->cmd_list->argv);
 	else if (ft_strequ(bin, "env"))
 		print_strings(sh->env);
 	else
@@ -47,16 +47,19 @@ void		shell_execute(t_shell *sh)
 	t_command *tmp;
 
 	ft_putchar('\n');
-	while (sh->cmd_list)
+	if (g_flags & INPUT_VALID)
 	{
-		tmp = sh->cmd_list;
-		if (!shell_execute_builtin(sh, sh->cmd_list->argv[0]))
+		while (sh->cmd_list)
 		{
-			shell_find_binary(sh, sh->cmd_list->argv);
-			shell_run_binary(sh);
+			tmp = sh->cmd_list;
+			if (!shell_execute_builtin(sh, sh->cmd_list->argv[0]))
+			{
+				shell_find_binary(sh, sh->cmd_list->argv);
+				shell_run_binary(sh);
+			}
+			shell_next_command(sh);
+			ft_strdel(&sh->binary);
 		}
-		shell_next_command(sh);
-		ft_strdel(&sh->binary);
+		ft_strdel(&sh->input);
 	}
-	ft_strdel(&sh->input);
 }

@@ -6,7 +6,7 @@
 /*   By: gscolera <gscolera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/23 15:21:15 by gscolera          #+#    #+#             */
-/*   Updated: 2019/04/10 13:03:20 by gscolera         ###   ########.fr       */
+/*   Updated: 2019/04/12 14:46:00 by gscolera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,12 @@ void			*ft_memccpy(void *dst, const void *src, int c, size_t n);
 void			*ft_memmove(void *dest, const void *src, size_t n);
 void			*ft_memchr(const void *s, int c, size_t n);
 int				ft_memcmp(const void *s1, const void *s2, size_t n);
-void    		*ft_realloc(void *ptr, size_t old_size, size_t new_size);
+void			*ft_realloc(void *ptr, size_t old_size, size_t new_size);
 void			*ft_memalloc(size_t size);
 void			ft_memdel(void **ap);
 /*
  ****************************STRINGS****************************************
- */
+*/
 char			**strings_allocate(size_t size);
 void			free_strings(char **string);
 void			print_strings(char **str);
@@ -68,8 +68,6 @@ void			ft_strclr(char *s);
 void			ft_insert_char(char *string, char c, size_t position);
 void			ft_delete_char(char *string, size_t pos);
 void			ft_replace_substr(char *string, size_t p, size_t s, char *new);
-
-
 /*
 *****************************PUTS**********************************************
 */

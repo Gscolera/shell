@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   shell_search_for_command.c                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gscolera <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/04/12 14:53:03 by gscolera          #+#    #+#             */
+/*   Updated: 2019/04/12 15:34:14 by gscolera         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "shell.h"
 
 static void		shell_lsearch(t_shell *sh)
@@ -20,7 +32,7 @@ static void		shell_lsearch(t_shell *sh)
 	free(path);
 }
 
-static void	shell_gsearch(t_shell *sh)
+static void		shell_gsearch(t_shell *sh)
 {
 	DIR	*dir;
 	int	i;
@@ -40,11 +52,9 @@ static void	shell_gsearch(t_shell *sh)
 	free_strings(sh->path);
 }
 
-void		shell_search_for_command(t_shell *sh)
+void			shell_search_for_command(t_shell *sh)
 {
-	t_cmplt *tmp;
-
-	sh->flags |= ONLYEXEC;
+	g_flags |= ONLYEXEC;
 	(shell_is_path(sh->input)) ? shell_lsearch(sh) : shell_gsearch(sh);
 	if (!sh->cmp_list)
 		return ;
@@ -52,7 +62,7 @@ void		shell_search_for_command(t_shell *sh)
 		shell_accept_option(sh, sh->cmp_list);
 	else
 	{
-		sh->flags |= CHOOSING;
+		g_flags |= CHOOSING;
 		shell_choose_option(sh, sh->cmp_list);
 	}
 }

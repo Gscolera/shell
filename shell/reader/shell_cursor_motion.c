@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   shell_cursor_motion.c                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gscolera <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/04/12 14:54:37 by gscolera          #+#    #+#             */
+/*   Updated: 2019/04/12 14:54:39 by gscolera         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "shell.h"
 
 void	shell_mvcl(t_shell *sh, t_reader *rd)
@@ -11,7 +23,7 @@ void	shell_mvcl(t_shell *sh, t_reader *rd)
 	{
 		TERM_ACTION(UPB);
 		rd->crs.y--;
-		while (rd->crs.x < sh->settings.window_size.x - 1)
+		while (rd->crs.x < g_window_size.x - 1)
 		{
 			TERM_ACTION(RIGHT);
 			rd->crs.x++;
@@ -22,7 +34,7 @@ void	shell_mvcl(t_shell *sh, t_reader *rd)
 
 void	shell_mvcr(t_shell *sh, t_reader *rd)
 {
-	if (rd->crs.x < sh->settings.window_size.x - 1)
+	if (rd->crs.x < g_window_size.x - 1)
 	{
 		rd->crs.x++;
 		TERM_ACTION(RIGHT);

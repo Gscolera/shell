@@ -6,7 +6,7 @@
 /*   By: gscolera <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/10 16:22:19 by gscolera          #+#    #+#             */
-/*   Updated: 2019/04/10 19:37:22 by gscolera         ###   ########.fr       */
+/*   Updated: 2019/04/12 15:35:05 by gscolera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,17 +27,16 @@ static void	shell_add_option(t_shell *sh, char *option)
 		shell_insert_option(sh, new_list);
 }
 
-void	shell_search_for_options(t_shell *sh, DIR *dir)
+void		shell_search_for_options(t_shell *sh, DIR *dir)
 {
 	struct dirent	*sd;
-	struct stat		st;
 	size_t			len;
 	size_t			opt_len;
 
 	len = ft_strlen(sh->input);
 	while ((sd = readdir(dir)))
 	{
-		if (sh->flags & ONLYDIR && !(sd->d_type & DT_DIR))
+		if (g_flags & ONLYDIR && !(sd->d_type & DT_DIR))
 			continue ;
 		if (ft_strnequ(sd->d_name, sh->input, len))
 		{
@@ -51,19 +50,21 @@ void	shell_search_for_options(t_shell *sh, DIR *dir)
 	}
 }
 
-void	shell_search_builtin(t_shell *sh)
+void		shell_search_builtin(t_shell *sh)
 {
 	int	len;
 
 	len = ft_strlen(sh->input);
 	if (ft_strnequ(sh->input, "setenv", len))
 		shell_add_option(sh, ft_strdup("setenv"));
-	if (ft_strnequ(sh->input, "unsetenv", len))
+	else if (ft_strnequ(sh->input, "unsetenv", len))
 		shell_add_option(sh, ft_strdup("unsetenv"));
-	if (ft_strnequ(sh->input, "cd", len))
+	else if (ft_strnequ(sh->input, "cd", len))
 		shell_add_option(sh, ft_strdup("cd"));
-	if (ft_strnequ(sh->input, "env", len))
+	else if (ft_strnequ(sh->input, "env", len))
 		shell_add_option(sh, ft_strdup("env"));
-	if (ft_strnequ(sh->input, "exit", len))
+	else if (ft_strnequ(sh->input, "exit", len))
 		shell_add_option(sh, ft_strdup("exit"));
+	else if (ft_strnequ(sh->input, "echo", len))
+		shell_add_option(sh, ft_strdup("echo"));
 }

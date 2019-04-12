@@ -6,17 +6,17 @@
 /*   By: anton <anton@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/21 20:37:43 by gscolera          #+#    #+#             */
-/*   Updated: 2019/03/10 22:08:04 by anton            ###   ########.fr       */
+/*   Updated: 2019/04/12 14:52:19 by gscolera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static int	split_size(char const *s, char c)
+static int		split_size(char const *s, char c)
 {
-	int 	size;
+	int		size;
 	int		i;
-	
+
 	i = 0;
 	if (!s)
 		return (0);
@@ -24,7 +24,7 @@ static int	split_size(char const *s, char c)
 	while (s[++i])
 	{
 		if (s[i] == c && i > 0 && s[i + 1])
-				size++;
+			size++;
 		while (s[i + 1] && s[i] == c)
 			i++;
 	}
@@ -47,7 +47,7 @@ static char		*get_next_word(char **splt, char *str, int i, char c)
 
 char			**ft_strsplit(char const *s, char c)
 {
-	char 	**splt;
+	char	**splt;
 	char	*str;
 	int		size;
 	int		i;

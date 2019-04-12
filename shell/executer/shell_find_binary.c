@@ -6,7 +6,7 @@
 /*   By: gscolera <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/09 16:45:40 by gscolera          #+#    #+#             */
-/*   Updated: 2019/04/09 19:30:03 by gscolera         ###   ########.fr       */
+/*   Updated: 2019/04/12 15:32:45 by gscolera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,13 @@
 
 static void	shell_find_binary_global(t_shell *sh, char **argv)
 {
-	char  **path;
-	int	  i;
+	char	**path;
+	int		i;
 
 	path = ft_strsplit(shell_getenv(sh->env, "PATH", 4), ':');
 	if (!path)
 		ft_perror("shell", "variable PATH is not set");
-	else 
+	else
 	{
 		i = -1;
 		while (path[++i] && !sh->binary)

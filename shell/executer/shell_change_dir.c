@@ -6,7 +6,7 @@
 /*   By: gscolera <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/09 20:16:44 by gscolera          #+#    #+#             */
-/*   Updated: 2019/04/10 15:48:20 by gscolera         ###   ########.fr       */
+/*   Updated: 2019/04/12 15:33:14 by gscolera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static int	shell_print_chdir_error(char *dir)
 	return (1);
 }
 
-static void	shell_set_pwd(t_shell *sh, char *dir)
+static void	shell_set_pwd(t_shell *sh)
 {
 	char	pwd[LINE_MAX];
 
@@ -34,7 +34,7 @@ static void	shell_set_pwd(t_shell *sh, char *dir)
 	shell_set_variable(sh, "PWD", pwd);
 }
 
-int		shell_change_dir(t_shell *sh, char **av)
+int			shell_change_dir(t_shell *sh, char **av)
 {
 	char		*dir;
 	size_t		count;
@@ -50,12 +50,12 @@ int		shell_change_dir(t_shell *sh, char **av)
 	else if (ft_strequ(av[1], "-"))
 	{
 		if (!(dir = shell_getenv(sh->env, "OLDPWD", 6)))
-			return (ft_perror("cd", "OLDPWD not set"));	
+			return (ft_perror("cd", "OLDPWD not set"));
 	}
 	else
 		dir = av[1];
 	if (chdir(dir) == -1)
 		return (shell_print_chdir_error(dir));
-	shell_set_pwd(sh, av[1]);
+	shell_set_pwd(sh);
 	return (0);
 }

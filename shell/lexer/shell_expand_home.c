@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   shell_expand_home.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gscolera <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/04/12 14:54:20 by gscolera          #+#    #+#             */
+/*   Updated: 2019/04/12 15:13:18 by gscolera         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "shell.h"
 
 char	*shell_expand_home(t_shell *sh, char *string, int i)
@@ -26,5 +38,3 @@ char	*shell_expand_home(t_shell *sh, char *string, int i)
 	ft_strdel(&string);
 	return (expanded);
 }
-
-

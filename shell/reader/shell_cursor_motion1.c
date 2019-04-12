@@ -1,11 +1,23 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   shell_cursor_motion1.c                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gscolera <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/04/12 14:54:40 by gscolera          #+#    #+#             */
+/*   Updated: 2019/04/12 15:12:56 by gscolera         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "shell.h"
 
 static size_t	shell_count_lines(t_shell *sh, t_reader *rd)
 {
-	return ((rd->il + sh->settings.promt_len) / sh->settings.window_size.x);
+	return ((rd->il + sh->settings.promt_len) / g_window_size.x);
 }
 
-void		shell_mvcnpw(t_shell *sh, t_reader *rd, long int key)
+void			shell_mvcnpw(t_shell *sh, t_reader *rd, long int key)
 {
 	if (key == SHKEYRIGHT && rd->ic < rd->il)
 	{
@@ -25,7 +37,7 @@ void		shell_mvcnpw(t_shell *sh, t_reader *rd, long int key)
 	}
 }
 
-void		shell_mvcnpl(t_shell *sh, t_reader *rd, long int key)
+void			shell_mvcnpl(t_shell *sh, t_reader *rd, long int key)
 {
 	size_t	saved_x;
 	size_t	saved_y;
@@ -40,7 +52,7 @@ void		shell_mvcnpl(t_shell *sh, t_reader *rd, long int key)
 	}
 	else if (key == SHKEYUP && rd->crs.y > 0)
 	{
-		saved_x = sh->settings.window_size.x - rd->crs.x - 1;
+		saved_x = g_window_size.x - rd->crs.x - 1;
 		saved_y = rd->crs.y;
 		while (rd->crs.y == saved_y)
 			shell_mvcl(sh, rd);

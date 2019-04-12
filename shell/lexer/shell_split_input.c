@@ -6,7 +6,7 @@
 /*   By: gscolera <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/08 14:55:51 by gscolera          #+#    #+#             */
-/*   Updated: 2019/04/08 20:30:02 by gscolera         ###   ########.fr       */
+/*   Updated: 2019/04/12 15:04:43 by gscolera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static void	shell_get_next_command(t_shell *sh, char *input, int i)
 {
 	t_command	*new_cmd;
 	t_command	*tmp;
-	
+
 	if (!(new_cmd = (t_command *)ft_memalloc(sizeof(t_bufflist))))
 		shell_close(sh, ft_perror("shell", "malloc error"));
 	if (!(new_cmd->cmd = shell_copy_command(input, i)))
@@ -60,10 +60,10 @@ void		shell_split_input(t_shell *sh, char *input)
 	while (input[++i])
 	{
 		if (QUOTE(input[i]))
-			shell_manage_quote(sh, input, i);
+			shell_manage_quote(input, i);
 		else if (QUOTE(input[i]) && i == 0)
 			ft_delete_char(input, i--);
-		else if (input[i] == ';' && NQT(sh->flags))
+		else if (input[i] == ';' && NQT(g_flags))
 		{
 			if (i == 0)
 				ft_delete_char(input, i);
@@ -75,7 +75,7 @@ void		shell_split_input(t_shell *sh, char *input)
 			i = -1;
 		}
 	}
-	if (i > 0 && NQT(sh->flags))
+	if (i > 0 && NQT(g_flags))
 		shell_get_next_command(sh, input, i);
-	sh->flags &= ~(DQT | SQT);
+	g_flags &= ~(DQT | SQT);
 }

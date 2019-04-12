@@ -7,11 +7,14 @@ INC = -I shell/includes -I libft/includes
 FLAGS = -Wall -Werror -Wextra
 
 $(NAME): $(OBJ)
-	gcc $(OBJ) $(INC) $(LIBFT) $(TERMCAP) -o $(NAME)
+	make re -C libft
+	gcc $(FLAGS) $(OBJ) $(INC) $(LIBFT) $(TERMCAP) -o $(NAME)
+	make clean -C libft
 
 all: $(NAME)
 
 fclean:
 	rm -f $(NAME)
+	make fclean -C libft
 
 re: fclean all

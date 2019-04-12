@@ -6,7 +6,7 @@
 /*   By: anton <anton@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/13 15:48:21 by gscolera          #+#    #+#             */
-/*   Updated: 2019/03/10 22:12:58 by anton            ###   ########.fr       */
+/*   Updated: 2019/04/12 14:43:40 by gscolera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ static void	print_octal(FORMAT *f, UINTMAX oc, int size)
 void		manage_octal(FORMAT *f)
 {
 	int			size;
-	UINTMAX	oc;
+	UINTMAX		oc;
 
 	get_octal(f, &oc);
 	get_size(f, oc, &size);

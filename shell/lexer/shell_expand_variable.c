@@ -6,7 +6,7 @@
 /*   By: gscolera <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 21:34:16 by gscolera          #+#    #+#             */
-/*   Updated: 2019/04/04 22:25:07 by gscolera         ###   ########.fr       */
+/*   Updated: 2019/04/12 15:27:53 by gscolera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ char			*shell_delete_var_name(char *string, int i)
 	return (string);
 }
 
-char			*shell_expand_variable(t_shell *sh, char *string, int i)
+char			*shell_expand_variable(t_shell *sh, char *string, size_t i)
 {
 	char	*expanded;
 	char	*value;
@@ -50,7 +50,7 @@ char			*shell_expand_variable(t_shell *sh, char *string, int i)
 	{
 		expanded[j] = string[j];
 		j++;
-	}	
+	}
 	while (value && *value)
 		expanded[j++] = *(value++);
 	i += varlen;

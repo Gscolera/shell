@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   shell_history.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gscolera <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/04/12 14:54:48 by gscolera          #+#    #+#             */
+/*   Updated: 2019/04/12 15:03:39 by gscolera         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "shell.h"
 
 static void	shell_free_last_bufflist(t_reader *rd)
@@ -10,7 +22,7 @@ static void	shell_free_last_bufflist(t_reader *rd)
 	ft_memdel((void **)&tmp);
 }
 
-void	shell_create_history_list(t_shell *sh, t_reader *rd)
+void		shell_create_history_list(t_shell *sh, t_reader *rd)
 {
 	rd->buffptr = (t_bufflist *)ft_memalloc(sizeof(t_bufflist));
 	if (!rd->buffptr)
@@ -35,10 +47,9 @@ void	shell_create_history_list(t_shell *sh, t_reader *rd)
 		if (rd->history->id > sh->settings.history_buffsize)
 			shell_free_last_bufflist(rd);
 	}
-
 }
 
-void	shell_scroll_history(t_shell *sh, t_reader *rd, int keycode)
+void		shell_scroll_history(t_shell *sh, t_reader *rd, int keycode)
 {
 	register int	i;
 

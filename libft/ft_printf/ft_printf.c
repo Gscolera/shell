@@ -6,13 +6,13 @@
 /*   By: anton <anton@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/13 16:14:49 by gscolera          #+#    #+#             */
-/*   Updated: 2019/04/01 12:07:52 by gscolera         ###   ########.fr       */
+/*   Updated: 2019/04/12 14:41:55 by gscolera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-static bool	init_format(FORMAT *f)
+static bool		init_format(FORMAT *f)
 {
 	ft_memset(f->output, 0, LINE_MAX);
 	f->argnum = 0;
@@ -31,7 +31,7 @@ static void		clean_format(FORMAT *f)
 	f->width = 0;
 }
 
-static bool	manage_text_format(FORMAT *f)
+static bool		manage_text_format(FORMAT *f)
 {
 	if (compare(f, "{red}"))
 		add_string(f, "\033[31m");

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   shell_search_for_arguments.c                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gscolera <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/04/12 14:52:59 by gscolera          #+#    #+#             */
+/*   Updated: 2019/04/12 15:33:35 by gscolera         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "shell.h"
 
 static void	shell_delete_path_from_input(t_shell *sh, char *path)
@@ -17,7 +29,7 @@ static void	shell_choose_argument(t_shell *sh)
 		shell_accept_option(sh, sh->cmp_list);
 	else
 	{
-		sh->flags |= CHOOSING;
+		g_flags |= CHOOSING;
 		shell_choose_option(sh, sh->cmp_list);
 	}
 }
@@ -51,12 +63,10 @@ void		shell_search_for_argument(t_shell *sh)
 	if (dir)
 	{
 		if (ft_strnequ(sh->rd.history->data, "cd ", 3))
-			sh->flags |= ONLYDIR;
+			g_flags |= ONLYDIR;
 		shell_search_for_options(sh, dir);
 		closedir(dir);
 		shell_choose_argument(sh);
 	}
 	ft_strdel(&path);
 }
-
-

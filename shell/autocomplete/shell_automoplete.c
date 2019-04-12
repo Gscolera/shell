@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   shell_automoplete.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gscolera <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/04/12 14:52:45 by gscolera          #+#    #+#             */
+/*   Updated: 2019/04/12 14:52:49 by gscolera         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "shell.h"
 
 void		shell_close_autocomplete(t_shell *sh)
@@ -14,7 +26,7 @@ void		shell_close_autocomplete(t_shell *sh)
 	sh->cmp_list = NULL;
 	sh->act_list = NULL;
 	ft_strdel(&sh->input);
-	sh->flags &= ~(CHOOSING | ONLYDIR | ONLYEXEC);
+	g_flags &= ~(CHOOSING | ONLYDIR | ONLYEXEC);
 	sh->options.len = 0;
 	sh->options.max_len = 0;
 	sh->options.count = 0;

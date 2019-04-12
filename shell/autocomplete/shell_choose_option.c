@@ -6,13 +6,13 @@
 /*   By: gscolera <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/10 19:29:17 by gscolera          #+#    #+#             */
-/*   Updated: 2019/04/10 20:31:20 by gscolera         ###   ########.fr       */
+/*   Updated: 2019/04/12 15:37:37 by gscolera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-void	shell_too_much_options(t_shell *sh)
+static void	shell_too_much_options(t_shell *sh)
 {
 	ft_printf("There are %d possibilies", sh->options.count);
 }
@@ -22,7 +22,7 @@ static void	shell_print_in_colums(t_shell *sh, t_cmplt *list)
 	size_t	row_capacity;
 	size_t	left_in_row;
 
-	row_capacity = (sh->settings.window_size.x - 10) / sh->options.max_len;
+	row_capacity = (g_window_size.x - 10) / sh->options.max_len;
 	while (list)
 	{
 		left_in_row = row_capacity;
@@ -39,7 +39,7 @@ static void	shell_print_in_colums(t_shell *sh, t_cmplt *list)
 }
 
 static void	shell_print_options(t_shell *sh, t_cmplt *list)
-{	
+{
 	TERM_ACTION(SAVEC);
 	TERM_ACTION(CD);
 	TERM_ACTION(DOWN);
@@ -49,7 +49,7 @@ static void	shell_print_options(t_shell *sh, t_cmplt *list)
 		sh->act_list = sh->act_list->next;
 	if (sh->options.count > 100)
 		shell_too_much_options(sh);
-	else if (sh->options.len >= sh->settings.window_size.x - 10)
+	else if (sh->options.len >= g_window_size.x - 10)
 		shell_print_in_colums(sh, list);
 	else
 	{
@@ -67,11 +67,11 @@ static void	shell_print_options(t_shell *sh, t_cmplt *list)
 
 void		shell_choose_option(t_shell *sh, t_cmplt *list)
 {
-	char 	buff[10];
+	char	buff[10];
 
 	ft_memset(buff, 0, 10);
 	shell_print_options(sh, list);
-	while (sh->flags & CHOOSING)
+	while (g_flags & CHOOSING)
 	{
 		read(fileno(stdin), buff, 10);
 		if (buff[0] == KEYTAB)
@@ -79,14 +79,14 @@ void		shell_choose_option(t_shell *sh, t_cmplt *list)
 		else if (buff[0] == KEYENTER)
 		{
 			shell_accept_option(sh, sh->act_list);
-			sh->flags &= ~CHOOSING;
+			g_flags &= ~CHOOSING;
 		}
 		else if (buff[0] == KEYESC)
-			sh->flags &= ~CHOOSING;
+			g_flags &= ~CHOOSING;
 		else if (ft_isprint(buff[0]))
 		{
 			shell_insert_char(sh, &sh->rd, buff[0]);
-			sh->flags &= ~CHOOSING;
+			g_flags &= ~CHOOSING;
 		}
 		ft_strclr(buff);
 	}

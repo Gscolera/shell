@@ -6,13 +6,21 @@
 /*   By: gscolera <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/09 17:47:00 by gscolera          #+#    #+#             */
-/*   Updated: 2019/04/10 13:36:18 by gscolera         ###   ########.fr       */
+/*   Updated: 2019/04/12 15:32:06 by gscolera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-void  shell_print_error(t_shell *sh)
+static void		shell_print_signal(int signal)
+{
+	if (signal == SIGSEGV)
+		ft_perror("shell", "segmentation fault");
+	if (signal == SIGBUS)
+		ft_perror("shell", "bus error");
+}
+
+static void		shell_print_error(t_shell *sh)
 {
 	if (!sh->binary)
 		ft_perror(sh->cmd_list->argv[0], "command not found");
@@ -20,7 +28,7 @@ void  shell_print_error(t_shell *sh)
 		ft_perror(sh->binary, "permission denied");
 }
 
-void  shell_run_binary(t_shell *sh)
+void			shell_run_binary(t_shell *sh)
 {
 	int		state;
 
@@ -33,13 +41,13 @@ void  shell_run_binary(t_shell *sh)
 			ft_perror("shell", "fork error");
 		if (!sh->pid)
 		{
-			state = execve(sh->binary, sh->cmd_list->argv, sh->env);
-			if (state == -1)
+			if (execve(sh->binary, sh->cmd_list->argv, sh->env) == -1)
 				shell_print_error(sh);
-			exit(state);
+			exit(0);
 		}
 		else
-			waitpid(sh->pid, NULL, 0);
+			waitpid(sh->pid, &state, 0);
+		(WIFSIGNALED(state)) ? shell_print_signal(WTERMSIG(state)) : 0;
 	}
 	sh->pid = 0;
 }

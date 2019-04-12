@@ -6,7 +6,7 @@
 /*   By: anton <anton@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/13 15:52:37 by gscolera          #+#    #+#             */
-/*   Updated: 2019/03/10 22:13:07 by anton            ###   ########.fr       */
+/*   Updated: 2019/04/12 14:44:12 by gscolera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ static void	print_unsigned(FORMAT *f, UINTMAX un, int size)
 void		manage_unsigned(FORMAT *f)
 {
 	int			size;
-	UINTMAX	un;
+	UINTMAX		un;
 
 	get_unsigned(f, &un);
 	get_size(f, un, &size);

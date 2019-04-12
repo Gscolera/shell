@@ -6,16 +6,16 @@
 /*   By: gscolera <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/09 20:18:13 by gscolera          #+#    #+#             */
-/*   Updated: 2019/04/10 14:36:25 by gscolera         ###   ########.fr       */
+/*   Updated: 2019/04/12 15:31:07 by gscolera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-void	  shell_set_variable(t_shell *sh, char *var, char *value)
+void		shell_set_variable(t_shell *sh, char *var, char *value)
 {
-	char  *new_env;
-	int	  i;
+	char	*new_env;
+	int		i;
 
 	if (!(new_env = ft_strnew(ft_strlen(var) + ft_strlen(value) + 1)))
 		shell_close(sh, ft_perror("sh", "malloc error"));
@@ -36,7 +36,7 @@ void	  shell_set_variable(t_shell *sh, char *var, char *value)
 	ft_strdel(&new_env);
 }
 
-void	  shell_delete_env(t_shell *sh, char *var)
+void		shell_delete_env(t_shell *sh, char *var)
 {
 	int		i;
 	int		len;
@@ -50,7 +50,7 @@ void	  shell_delete_env(t_shell *sh, char *var)
 		if (ft_strnequ(sh->env[i], var, len))
 		{
 			ft_strdel(&sh->env[i]);
-			break;
+			break ;
 		}
 	}
 	while (sh->env[i + 1])
@@ -61,7 +61,7 @@ void	  shell_delete_env(t_shell *sh, char *var)
 	sh->env[i] = NULL;
 }
 
-void		  shell_setenv(t_shell *sh, char **argv)
+void		shell_setenv(t_shell *sh, char **argv)
 {
 	if (count_strings(argv) != 3)
 	{
@@ -71,13 +71,13 @@ void		  shell_setenv(t_shell *sh, char **argv)
 	{
 		ft_perror("shell", "env name is too long");
 	}
-	else 
+	else
 	{
 		shell_set_variable(sh, argv[1], argv[2]);
 	}
 }
 
-void		  shell_unsetenv(t_shell *sh, char **argv)
+void		shell_unsetenv(t_shell *sh, char **argv)
 {
 	char	buff[VAR_NAME_MAX + 2];
 	int		i;
@@ -85,7 +85,7 @@ void		  shell_unsetenv(t_shell *sh, char **argv)
 	i = 0;
 	ft_memset(buff, 0, VAR_NAME_MAX + 2);
 	while (argv[++i])
-	{	
+	{
 		ft_strcat(buff, argv[i]);
 		ft_strcat(buff, "=");
 		shell_delete_env(sh, buff);

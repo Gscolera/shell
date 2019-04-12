@@ -6,7 +6,7 @@
 /*   By: anton <anton@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/13 15:43:32 by gscolera          #+#    #+#             */
-/*   Updated: 2019/03/10 22:12:36 by anton            ###   ########.fr       */
+/*   Updated: 2019/04/12 14:43:20 by gscolera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ static void	get_decimal(FORMAT *f, SINTMAX *decimal)
 
 static void	get_size(FORMAT *f, SINTMAX decimal, int *size)
 {
-
 	if (decimal < 0)
 		f->flags |= MINUS;
 	*size = (decimal == 0) ? 1 : 0;
@@ -79,7 +78,7 @@ void		manage_decimal(FORMAT *f)
 {
 	_Bool		sign;
 	int			size;
-	SINTMAX	decimal;
+	SINTMAX		decimal;
 
 	get_decimal(f, &decimal);
 	get_size(f, decimal, &size);
