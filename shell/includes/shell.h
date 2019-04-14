@@ -6,7 +6,7 @@
 /*   By: anton <anton@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/24 16:16:33 by gscolera          #+#    #+#             */
-/*   Updated: 2019/04/14 13:47:51 by gscolera         ###   ########.fr       */
+/*   Updated: 2019/04/14 19:09:46 by gscolera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ void				shell_close(t_shell *sh, int exit_code);
 *********************READER****************************************************
 */
 void				shell_read_input(t_shell *sh, t_reader *rd);
+void				shell_confirm_input(t_shell *sh, t_reader *rd);
 void				shell_insert_char(t_shell *sh, t_reader *rd, char c);
 void				shell_parse_events(t_shell *sh, t_reader *rd, char *buff);
 void				shell_create_history_list(t_shell *sh, t_reader *rd);
@@ -92,5 +93,7 @@ char				*shell_get_current_path(void);
 bool				shell_is_path(char *input);
 void				shell_signal_init(void);
 void				shell_end_of_input(t_shell *sh, t_reader *rd);
+void				shell_clear_input(t_shell *sh, t_reader *rd);
+bool				shell_check_quotes(char *input);
 
 #endif

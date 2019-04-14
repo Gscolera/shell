@@ -6,7 +6,7 @@
 /*   By: gscolera <gscolera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/12 14:54:52 by gscolera          #+#    #+#             */
-/*   Updated: 2019/04/14 12:31:21 by gscolera         ###   ########.fr       */
+/*   Updated: 2019/04/14 20:47:52 by gscolera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,10 @@ static void	shell_print_promt(t_shell *sh)
 	sh->rd.crs = sh->rd.home;
 }
 
+void		shell_confirm_input(t_shell *sh, t_reader *rd)
+{
+	g_flags &= ~READING;
+}
 void		shell_read_input(t_shell *sh, t_reader *rd)
 {
 	tcsetattr(0, TCSANOW, &sh->settings.term_shell);

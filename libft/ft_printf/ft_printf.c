@@ -6,7 +6,7 @@
 /*   By: anton <anton@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/13 16:14:49 by gscolera          #+#    #+#             */
-/*   Updated: 2019/04/12 14:41:55 by gscolera         ###   ########.fr       */
+/*   Updated: 2019/04/14 21:29:14 by gscolera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ int				ft_printf(const char *format, ...)
 	va_end(f.list);
 	if (f.length)
 	{
-		write(1, f.output, f.length);
+		write(fileno(stdout), f.output, f.length);
 		return (f.length);
 	}
 	return (-1);

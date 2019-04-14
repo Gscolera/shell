@@ -6,7 +6,7 @@
 /*   By: gscolera <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/12 14:54:45 by gscolera          #+#    #+#             */
-/*   Updated: 2019/04/14 12:48:08 by gscolera         ###   ########.fr       */
+/*   Updated: 2019/04/14 19:49:38 by gscolera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void			shell_parse_events(t_shell *sh, t_reader *rd, char *buff)
 	else if (key == KEYEND)
 		shell_mvce(sh, rd);
 	else if (key == KEYENTER && !(g_flags & CHOOSING))
-		g_flags &= ~READING;
+		shell_confirm_input(sh, rd);
 	else if (key == KEYUP || key == KEYDOWN)
 		shell_scroll_history(sh, rd, key);
 	else if (key == KEYTAB && rd->il > 0)

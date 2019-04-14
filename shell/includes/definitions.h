@@ -6,7 +6,7 @@
 /*   By: gscolera <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/12 14:54:13 by gscolera          #+#    #+#             */
-/*   Updated: 2019/04/14 13:47:54 by gscolera         ###   ########.fr       */
+/*   Updated: 2019/04/14 19:09:28 by gscolera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@
 # define ONLYDIR		(1 << 7)
 # define ONLYEXEC		(1 << 8)
 # define SHELL_SIGINT	(1 << 9)
+# define MATCH			(1 << 10)
 
 /*
  *************ACCES FLAGS**********************************
@@ -166,9 +167,6 @@ typedef	struct			s_request
 {
 	char				line[LINE_MAX];
 	size_t				pos;
-	t_coordinate		crs;
-	t_coordinate		home;
-	t_coordinate		request_start;
 }						t_request;
 
 typedef struct			s_shell

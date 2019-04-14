@@ -6,7 +6,7 @@
 /*   By: gscolera <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/09 17:47:00 by gscolera          #+#    #+#             */
-/*   Updated: 2019/04/13 14:40:24 by gscolera         ###   ########.fr       */
+/*   Updated: 2019/04/14 21:28:12 by gscolera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,8 @@ static void		shell_print_error(t_shell *sh)
 void			shell_run_binary(t_shell *sh)
 {
 	int		state;
-
+	int		fd = open("tmp", O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
+	
 	if (!sh->binary)
 		shell_print_error(sh);
 	else
@@ -41,6 +42,8 @@ void			shell_run_binary(t_shell *sh)
 			ft_perror("shell", "fork error");
 		if (!sh->pid)
 		{
+			dup2(fd, fileno(stdout));
+			dup2(fd, 2);
 			if (execve(sh->binary, sh->cmd_list->argv, sh->env) == -1)
 				shell_print_error(sh);
 			exit(0);
@@ -49,5 +52,6 @@ void			shell_run_binary(t_shell *sh)
 			waitpid(sh->pid, &state, 0);
 		(WIFSIGNALED(state)) ? shell_print_signal(WTERMSIG(state)) : 0;
 	}
+	close(fd);
 	sh->pid = 0;
 }
