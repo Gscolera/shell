@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell_read_input.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gscolera <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: gscolera <gscolera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/12 14:54:52 by gscolera          #+#    #+#             */
-/*   Updated: 2019/04/12 21:56:31 by gscolera         ###   ########.fr       */
+/*   Updated: 2019/04/14 12:31:21 by gscolera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,28 +59,23 @@ static void	shell_parse_buffer(t_shell *sh, t_reader *rd, char *buffer)
 	}
 }
 
-static void	shell_expand_promt(t_shell *sh)
+static void	shell_print_promt(t_shell *sh)
 {
-	char *promt;
-
 	sh->rd.ic = 0;
 	sh->rd.il = 0;
-	sh->rd.crs.y = 0;
-	promt = ft_strdup(sh->settings.promt);
-	promt = shell_expand_string(sh, promt);
-	shell_delete_characters(promt, "\"\'");
-	shell_count_promt_len(&sh->settings, promt);
-	sh->rd.crs.x = sh->settings.promt_len;
-	ft_printf(promt);
-	ft_strdel(&promt);
-	g_flags &= ~INPUT_VALID;
+	sh->rd.promt = ft_strdup(sh->settings.promt);
+	sh->rd.promt = shell_expand_string(sh, sh->rd.promt);
+	shell_delete_characters(sh->rd.promt, "\"\'");
+	ft_printf(sh->rd.promt);
+	shell_get_cursor_position(&sh->rd.home);
+	sh->rd.crs = sh->rd.home;
 }
 
 void		shell_read_input(t_shell *sh, t_reader *rd)
 {
 	tcsetattr(0, TCSANOW, &sh->settings.term_shell);
+	shell_print_promt(sh);
 	shell_create_history_list(sh, rd);
-	shell_expand_promt(sh);
 	g_flags |= READING;
 	while (g_flags & READING)
 	{
@@ -92,16 +87,12 @@ void		shell_read_input(t_shell *sh, t_reader *rd)
 			rd->buffptr = rd->history;
 			ft_strclr(rd->buffptr->data);
 			TERM_ACTION(DOWN);
-			shell_expand_promt(sh);
+			shell_print_promt(sh);
 			g_flags &= ~SHELL_SIGINT;
-		}
-		if (g_flags & SHELL_SIGQUIT)
-		{
-			ft_printf("hello\n");
-			g_flags &= ~SHELL_SIGQUIT;
-
 		}
 	}
 	sh->input = ft_strtrim(rd->history->data);
+	ft_strdel(&sh->rd.promt);
 	tcsetattr(0, TCSANOW, &sh->settings.term_default);
+	TERM_ACTION(DOWN);
 }

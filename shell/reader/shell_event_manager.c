@@ -6,7 +6,7 @@
 /*   By: gscolera <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/12 14:54:45 by gscolera          #+#    #+#             */
-/*   Updated: 2019/04/12 15:02:49 by gscolera         ###   ########.fr       */
+/*   Updated: 2019/04/14 12:48:08 by gscolera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,12 +33,14 @@ static long	int	shell_get_key(char *buff)
 
 static void		shell_additional_events(t_shell *sh, t_reader *rd, long int key)
 {
-	if (key == KEYHOME)
-		shell_mvch(sh, rd);
-	else if (key == SHKEYRIGHT || key == SHKEYLEFT)
+	if (key == SHKEYRIGHT || key == SHKEYLEFT)
 		shell_mvcnpw(sh, rd, key);
 	else if (key == SHKEYDOWN || key == SHKEYUP)
 		shell_mvcnpl(sh, rd, key);
+	else if (key == CNTLD)
+		shell_end_of_input(sh, rd);
+	else if (key == CNTLR)
+		shell_bck_i_search(sh, rd);
 }
 
 void			shell_parse_events(t_shell *sh, t_reader *rd, char *buff)

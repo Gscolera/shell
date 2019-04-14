@@ -1,37 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   shell_find_binary.c                                :+:      :+:    :+:   */
+/*   shell_end_of_input.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gscolera <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/09 16:45:40 by gscolera          #+#    #+#             */
-/*   Updated: 2019/04/13 13:11:59 by gscolera         ###   ########.fr       */
+/*   Created: 2019/04/13 20:42:31 by gscolera          #+#    #+#             */
+/*   Updated: 2019/04/13 20:54:31 by gscolera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-void		shell_find_binary(t_shell *sh, char **argv)
+void	shell_end_of_input(t_shell *sh, t_reader *rd)
 {
-	char	**path;
-	int		i;
-
-	if (access(argv[0], FILE_EXISTS))
+/*	if (rd->ic < rd->il && rd->il > 0)
 	{
-		path = ft_strsplit(shell_getenv(sh->env, "PATH", 4), ':');
-		if (path)
-		{
-			i = -1;
-			while (path[++i] && !sh->binary)
-			{
-				sh->binary = ft_pathcat(path[i], argv[0]);
-				if (access(sh->binary, FILE_EXISTS))
-					ft_strdel(&sh->binary);
-			}
-			free_strings(path);
-		}
+		shell_delete_char(sh, rd, KEYDEL);
+		ft_printf("a");
 	}
+	else if (rd->ic == 0 && rd->il == 0)
+		shell_close(sh, EXIT_SUCCESS);
 	else
-		sh->binary = ft_strdup(argv[0]);
+	{
+		ft_printf("%d %d", rd->ic, rd->il);
+	}*/
 }

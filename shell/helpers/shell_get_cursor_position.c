@@ -1,33 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   shell_count_promt_len.c                            :+:      :+:    :+:   */
+/*   shell_get_cursor_position.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gscolera <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/12 14:53:27 by gscolera          #+#    #+#             */
-/*   Updated: 2019/04/12 14:53:28 by gscolera         ###   ########.fr       */
+/*   Created: 2019/04/13 19:10:52 by gscolera          #+#    #+#             */
+/*   Updated: 2019/04/13 19:11:30 by gscolera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-void		shell_count_promt_len(t_settings *settings, char *promt)
+void	shell_get_cursor_position(t_coordinate *crs)
 {
-	register int	i;
-	register bool	stat;
-
-	i = 0;
-	settings->promt_len = 0;
-	stat = true;
-	while (promt[i])
+	char buf[15];
+	int ret;
+	int i;
+	
+	i = -1;
+	ft_memset(crs, 0, sizeof(t_coordinate));
+	write(1, "\033[6n", 4);
+	ret = read(0, buf, 15);
+	while (++i < ret && buf[i] != ';')
 	{
-		if (promt[i] == '{')
-			stat = false;
-		else if (promt[i] == '}')
-			stat = true;
-		else if (stat == true)
-			settings->promt_len++;
+		if (ft_isdigit(buf[i]))
+			crs->y = crs->y * 10 + buf[i] - 48;
+	}
+	while (i < ret)
+	{
+		if (ft_isdigit(buf[i]))
+			crs->x = crs->x * 10 + buf[i] - 48;
 		i++;
 	}
+	crs->x -= 1;
 }

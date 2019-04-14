@@ -6,7 +6,7 @@
 /*   By: gscolera <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/12 14:54:37 by gscolera          #+#    #+#             */
-/*   Updated: 2019/04/12 14:54:39 by gscolera         ###   ########.fr       */
+/*   Updated: 2019/04/13 19:19:34 by gscolera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,17 +50,14 @@ void	shell_mvcr(t_shell *sh, t_reader *rd)
 
 void	shell_mvch(t_shell *sh, t_reader *rd)
 {
-	while (rd->crs.y)
+	while (rd->crs.y > rd->home.y)
 	{
 		TERM_ACTION(UPB);
 		rd->crs.y--;
 	}
-	while (rd->crs.x != sh->settings.promt_len)
+	while (rd->crs.x != rd->home.x)
 	{
-		if (rd->crs.x > sh->settings.promt_len)
-			shell_mvcl(sh, rd);
-		else
-			shell_mvcr(sh, rd);
+		(rd->crs.x > rd->home.x) ? shell_mvcl(sh, rd) : shell_mvcr(sh, rd);
 	}
 	rd->ic = 0;
 }

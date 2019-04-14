@@ -1,2 +1,2 @@
 HISTORYSIZE=500
-PROMT={green}{bold}"$USER"->{cyan}"$PWD"'{eoc}$> '
+PROMT={green}{bold}"$USER"->{blue}{bold}"$PWD"'{eoc}$> '

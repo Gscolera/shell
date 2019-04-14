@@ -6,7 +6,7 @@
 /*   By: gscolera <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/12 14:54:13 by gscolera          #+#    #+#             */
-/*   Updated: 2019/04/12 21:53:17 by gscolera         ###   ########.fr       */
+/*   Updated: 2019/04/14 13:47:54 by gscolera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,8 @@
 # define SHKEYRIGHT		30078481936963
 # define SHKEYUP		30078481936961
 # define SHKEYDOWN		30078481936962
+# define CNTLR			18
+# define CNTLD			4
 
 /*
  **************FLAGS****************************************
@@ -72,11 +74,10 @@
 # define DQT			(1 << 3)
 # define SPC			(1 << 4)
 # define CHOOSING		(1 << 5)
-# define ONLYDIR		(1 << 6)
-# define ONLYEXEC		(1 << 7)
-# define SHELL_SIGINT	(1 << 8)
-# define INPUT_VALID	(1 << 9)
-# define SHELL_SIGQUIT	(1 << 10)
+# define SEARCHING		(1 << 6)
+# define ONLYDIR		(1 << 7)
+# define ONLYEXEC		(1 << 8)
+# define SHELL_SIGINT	(1 << 9)
 
 /*
  *************ACCES FLAGS**********************************
@@ -133,10 +134,12 @@ typedef	struct			s_reader
 	t_bufflist			*buffend;
 	char				buffer[LINE_MAX];
 	char				*esc[TOTAL];
+	char				*promt;
 	size_t				il;
 	size_t				ic;
 	size_t				buff_size;
 	t_coordinate		crs;
+	t_coordinate		home;
 }						t_reader;
 
 typedef struct			s_cmplt
@@ -158,6 +161,15 @@ typedef struct			s_opt_count
 	size_t				max_len;
 	size_t				count;
 }						t_opt_count;
+
+typedef	struct			s_request
+{
+	char				line[LINE_MAX];
+	size_t				pos;
+	t_coordinate		crs;
+	t_coordinate		home;
+	t_coordinate		request_start;
+}						t_request;
 
 typedef struct			s_shell
 {

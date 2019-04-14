@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell_open.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gscolera <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: gscolera <gscolera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 21:40:11 by gscolera          #+#    #+#             */
-/*   Updated: 2019/04/12 21:25:42 by gscolera         ###   ########.fr       */
+/*   Updated: 2019/04/13 20:20:20 by gscolera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static void	shell_get_settings(t_shell *sh, t_settings *settings)
 	tcgetattr(fileno(stdin), &settings->term_default);
 	settings->term_shell = settings->term_default;
 	settings->term_shell.c_lflag &= ~(ECHO | ICANON);
-	settings->term_shell.c_cc[VMIN] = 0;
+	settings->term_shell.c_cc[VMIN] = 1;
 	settings->term_shell.c_cc[VTIME] = 0;
 	if (!settings->promt[0])
 		shell_get_promt(settings);
@@ -41,22 +41,16 @@ static void	shell_get_escape_sequences(t_reader *rd)
 	rd->esc[CD] = tgetstr("cd", NULL);
 }
 
-static void	shell_allocate_memory(t_shell *sh)
-{
-	extern char		**environ;
-
-	if (!(sh->env = copy_strings(environ)))
-		shell_close(sh, ft_perror("shell error", "unable to copy eviron"));
-}
-
 void		shell_open(t_shell *sh)
 {
+	extern char		**environ;
 	char	*ttype;
 	int		ret;
 
 	ft_memset(sh, 0, sizeof(t_shell));
 	shell_get_settings(sh, &sh->settings);
-	shell_allocate_memory(sh);
+	if (!(sh->env = copy_strings(environ)))
+		shell_close(sh, ft_perror("shell error", "unable to copy eviron"));
 	ttype = shell_getenv(sh->env, "TERM", 4);
 	if (!(ret = tgetent(NULL, ttype)))
 	{

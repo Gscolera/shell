@@ -6,7 +6,7 @@
 /*   By: gscolera <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 17:55:22 by gscolera          #+#    #+#             */
-/*   Updated: 2019/04/12 14:53:14 by gscolera         ###   ########.fr       */
+/*   Updated: 2019/04/13 18:41:49 by gscolera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,22 +44,14 @@ static bool	shell_execute_builtin(t_shell *sh, char *bin)
 
 void		shell_execute(t_shell *sh)
 {
-	t_command *tmp;
-
-	ft_putchar('\n');
-	if (g_flags & INPUT_VALID)
+	while (sh->cmd_list)
 	{
-		while (sh->cmd_list)
+		if (!shell_execute_builtin(sh, sh->cmd_list->argv[0]))
 		{
-			tmp = sh->cmd_list;
-			if (!shell_execute_builtin(sh, sh->cmd_list->argv[0]))
-			{
-				shell_find_binary(sh, sh->cmd_list->argv);
-				shell_run_binary(sh);
-			}
-			shell_next_command(sh);
-			ft_strdel(&sh->binary);
+			shell_find_binary(sh, sh->cmd_list->argv);
+			shell_run_binary(sh);
 		}
-		ft_strdel(&sh->input);
+		shell_next_command(sh);
+		ft_strdel(&sh->binary);
 	}
 }

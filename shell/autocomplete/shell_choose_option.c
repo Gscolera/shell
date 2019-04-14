@@ -6,15 +6,18 @@
 /*   By: gscolera <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/10 19:29:17 by gscolera          #+#    #+#             */
-/*   Updated: 2019/04/12 15:37:37 by gscolera         ###   ########.fr       */
+/*   Updated: 2019/04/13 20:07:33 by gscolera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-static void	shell_too_much_options(t_shell *sh)
+static void	shell_reprint_input(t_reader *rd)
 {
-	ft_printf("There are %d possibilies", sh->options.count);
+	ft_printf(rd->promt);
+	shell_get_cursor_position(&rd->home);
+	ft_printf(rd->history->data);
+	g_flags &= ~CHOOSING;
 }
 
 static void	shell_print_in_colums(t_shell *sh, t_cmplt *list)
@@ -34,22 +37,19 @@ static void	shell_print_in_colums(t_shell *sh, t_cmplt *list)
 				ft_printf("%-*s", sh->options.max_len, list->option);
 			list = list->next;
 		}
-		TERM_ACTION(DOWN);
+		shell_mvcd(sh, &sh->rd);
 	}
 }
 
 static void	shell_print_options(t_shell *sh, t_cmplt *list)
 {
-	TERM_ACTION(SAVEC);
 	TERM_ACTION(CD);
-	TERM_ACTION(DOWN);
+	shell_mvcd(sh, &sh->rd);
 	if (!sh->act_list || !sh->act_list->next)
 		sh->act_list = sh->cmp_list;
 	else
 		sh->act_list = sh->act_list->next;
-	if (sh->options.count > 100)
-		shell_too_much_options(sh);
-	else if (sh->options.len >= g_window_size.x - 10)
+	if (sh->options.len >= g_window_size.x - 10)
 		shell_print_in_colums(sh, list);
 	else
 	{
@@ -62,7 +62,11 @@ static void	shell_print_options(t_shell *sh, t_cmplt *list)
 			list = list->next;
 		}
 	}
-	TERM_ACTION(RSRC);
+	if (sh->rd.home.y > g_window_size.y)
+		shell_reprint_input(&sh->rd);
+	shell_get_cursor_position(&sh->rd.crs);
+	shell_mvch(sh, &sh->rd);
+	shell_mvce(sh, &sh->rd);
 }
 
 void		shell_choose_option(t_shell *sh, t_cmplt *list)
@@ -83,9 +87,10 @@ void		shell_choose_option(t_shell *sh, t_cmplt *list)
 		}
 		else if (buff[0] == KEYESC)
 			g_flags &= ~CHOOSING;
-		else if (ft_isprint(buff[0]))
+		else if (ft_isprint(buff[0]) || buff[0] == 127)
 		{
-			shell_insert_char(sh, &sh->rd, buff[0]);
+			(ft_isprint(buff[0])) ? shell_insert_char(sh, &sh->rd, buff[0]) : 0;
+			(buff[0] == 127) ? shell_delete_char(sh, &sh->rd, KEYBS) : 0;
 			g_flags &= ~CHOOSING;
 		}
 		ft_strclr(buff);

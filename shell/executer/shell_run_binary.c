@@ -6,7 +6,7 @@
 /*   By: gscolera <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/09 17:47:00 by gscolera          #+#    #+#             */
-/*   Updated: 2019/04/12 15:32:06 by gscolera         ###   ########.fr       */
+/*   Updated: 2019/04/13 14:40:24 by gscolera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static void		shell_print_error(t_shell *sh)
 {
 	if (!sh->binary)
 		ft_perror(sh->cmd_list->argv[0], "command not found");
-	else if (access(sh->binary, FILE_EXEC))
+	else if (!access(sh->binary, FILE_EXEC))
 		ft_perror(sh->binary, "permission denied");
 }
 

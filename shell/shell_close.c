@@ -6,7 +6,7 @@
 /*   By: gscolera <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/12 14:55:03 by gscolera          #+#    #+#             */
-/*   Updated: 2019/04/12 14:55:04 by gscolera         ###   ########.fr       */
+/*   Updated: 2019/04/13 19:54:34 by gscolera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ void		shell_close(t_shell *sh, int exit_code)
 		shell_free_history_buffer(&sh->rd);
 	if (sh->input)
 		ft_strdel(&sh->input);
+	if (sh->rd.promt)
+		ft_strdel(&sh->rd.promt);
 	ft_putstr("\033]2;Terminal\007");
 	exit(exit_code);
 }
