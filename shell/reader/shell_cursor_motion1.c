@@ -71,3 +71,22 @@ void			shell_mvcd(t_shell *sh, t_reader *rd)
 		rd->home.y--;
 	
 }
+
+void			shell_goto(t_shell *sh, t_reader *rd, t_coordinate *pos)
+{
+	while (rd->crs.y < pos->y && rd->crs.y < g_window_size.y)
+	{
+		TERM_ACTION(DOWN);
+		rd->crs.y++;
+	}
+	while (rd->crs.y > pos->y && rd->crs.y > 0)
+	{
+		TERM_ACTION(UPB);
+		rd->crs.y--;
+	}
+	while (rd->crs.x != pos->x)
+	{
+		(pos->x < rd->crs.x) ? shell_mvcl(sh, rd) : shell_mvcr(sh, rd);
+	}
+	
+}

@@ -53,6 +53,7 @@ void				shell_mvce(t_shell *sh, t_reader *rd);
 void				shell_mvcnpw(t_shell *sh, t_reader *rd, long int key);
 void				shell_mvcnpl(t_shell *sh, t_reader *rd, long int key);
 void				shell_mvcd(t_shell *sh, t_reader *rd);
+void				shell_goto(t_shell *sh, t_reader *rd, t_coordinate *pos);
 /*
  ********************LEXER*****************************************************
 */
@@ -78,7 +79,6 @@ int					shell_change_dir(t_shell *sh, char **argv);
 /*
  *********************HELPERS***************************************************
 */
-void				shell_get_next_line(t_shell *sh, int fd);
 void				shell_get_cursor_position(t_coordinate *crs);
 void				shell_read_config_file(t_shell *sh);
 void				shell_get_promt(t_settings *settings);

@@ -12,34 +12,26 @@
 
 #include "shell.h"
 
-static void	shell_read_config_line(t_settings *settings, char *buffptr)
+static void	shell_read_config_line(t_settings *settings, char *buffer)
 {
-	ft_printf("OPEN\n");
-	if (ft_strnequ(buffptr, "PROMT=", 6))
-		ft_strcpy(settings->promt, buffptr + 6);
-	else if (ft_strnequ(buffptr, "HISTORYSIZE=", 12))
-		settings->history_buffsize = ft_atoi(buffptr + 12);
+	if (ft_strnequ(buffer, "PROMT=", 6))
+		ft_strncpy(settings->promt, buffer + 6, PROMT_MAX);
+	else if (ft_strnequ(buffer, "HISTORYSIZE=", 12))
+		settings->history_buffsize = ft_atoi(buffer + 12);
 }
 
 void		shell_read_config_file(t_shell *sh)
 {
 	int		fd;
-	char	*buffptr;
+	char	*buffer;
 
-	if ((fd = open(CONFIG_FILE, O_RDONLY)) > 0)
+	if ((fd = open(CONFIG_FILE, O_RDONLY)) == -1)
+		return ;
+	while (get_next_line(fd, &buffer))
 	{
-		buffptr = sh->rd.buffer;
-		while (true)
-		{
-			shell_get_next_line(sh, fd);
-			if (buffptr[0] == '#' && buffptr[1] == ' ')
-				continue ;
-			else if (buffptr[0])
-				shell_read_config_line(&sh->settings, buffptr);
-			else
-				break ;
-			ft_strclr(buffptr);
-		}
-		close(fd);
+		if (buffer[0] != '#')
+			shell_read_config_line(&sh->settings, buffer);
+		ft_strdel(&buffer);
 	}
+	close(fd);
 }

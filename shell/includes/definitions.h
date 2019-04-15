@@ -31,6 +31,7 @@
 # define QUOTE(c)		(c == '\'' || c == '\"')
 # define NQT(f)			(!(f & SQT) && !(f & DQT))
 # define BSLASH(c)		(c == '\\')
+# define SPECIAL(c)		(c == '$' || c == '~')
 
 /*
  ************DEFAULT_SETTINGS******************************
@@ -41,6 +42,7 @@
 # define HOST_NAME		255
 # define BUFF_SIZE		100
 # define VAR_NAME_MAX	512
+# define PROMT_MAX		512
 
 /*
  ************KEYMAP****************************************
@@ -153,6 +155,7 @@ typedef struct			s_command
 {
 	char				*cmd;
 	char				**argv;
+	char				flags;
 	struct s_command	*next;
 }						t_command;
 

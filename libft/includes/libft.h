@@ -17,6 +17,20 @@
 # include <stdlib.h>
 # include <string.h>
 # include <stdbool.h>
+# include <fcntl.h>
+
+# define GNL_BUFF_SIZE 100
+
+typedef struct	s_file
+{
+	char				*data;
+	int					fd;
+	int					ret;
+	struct s_file		*next;
+}				t_file;
+
+int				get_next_line(const int fd, char **line);
+
 
 /*
 ******************************MEMORY****************************************

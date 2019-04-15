@@ -12,29 +12,15 @@
 
 #include "shell.h"
 
-static bool	shell_special(char c)
-{
-	return (c == '$' ||
-			c == '~' ||
-			c == '*' ||
-			c == '?');
-}
-
 void		shell_manage_quote(char *string, int i)
 {
 	if (string[i] == '\'' && !(g_flags & DQT))
 	{
-		if (g_flags & SQT)
-			g_flags &= ~SQT;
-		else
-			g_flags |= SQT;
+		shell_switch_flag(SQT);
 	}
 	else if (string[i] == '\"' && !(g_flags & SQT))
 	{
-		if (g_flags & DQT)
-			g_flags &= ~DQT;
-		else
-			g_flags |= DQT;
+		shell_switch_flag(DQT);
 	}
 }
 
@@ -63,7 +49,7 @@ char		*shell_expand_string(t_shell *sh, char *string)
 		}
 		else if (QUOTE(string[i]))
 			shell_manage_quote(string, i);
-		else if (shell_special(string[i]) && !(g_flags & SQT))
+		else if (SPECIAL(string[i]) && !(g_flags & SQT))
 			string = shell_manage_special(sh, string, i);
 	}
 	g_flags &= ~(SQT | DQT);

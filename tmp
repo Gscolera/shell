@@ -1,9 +1,8 @@
 21sh
-21sh.dSYM
-Makefile
-README.md
 author
 config
 libft
+Makefile
+README.md
 shell
 tmp
